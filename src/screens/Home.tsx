@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { MainStackParamList } from "../types/navigation";
 import { StackScreenProps } from "@react-navigation/stack";
 import { supabase } from "../initSupabase";
 import {
   Layout,
-  Button,
   TopNav,
   Section,
   SectionContent,
@@ -13,14 +12,11 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import ContactCard from "../components/ContactCard";
+import { Contact } from '../types/contact'
+
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import 'react-native-url-polyfill/auto'
-
-type Contact = {
-  id: string
-  name: string
-  email: string
-}
 
 export default function ({
   navigation,
@@ -29,14 +25,26 @@ export default function ({
   const [loading, setLoading] = useState(true)
   const [contacts, setContacts] = useState<Array<Contact>>([])
 
-    const renderItem = ({item}: {item: Contact}) => {
-      return (
-        <View style={styles.contactCard}>
-          <Text style={styles.contactName}>{item.name}</Text>
-        </View>
-      );
+  const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} />
+
+  const toggleTheme = () => {
+    if (isDarkmode) {
+      setTheme("light");
+    } else {
+      setTheme("dark");
     }
-  
+  };
+
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      alert("Signed out!");
+    }
+    if (error) {
+      alert(error.message);
+    }
+  }
+
   useEffect(() => {
     getContacts()
   }, [])
@@ -68,13 +76,7 @@ export default function ({
             color={isDarkmode ? themeColor.white100 : themeColor.dark}
           />
         }
-        leftAction={() => {
-          if (isDarkmode) {
-            setTheme("light");
-          } else {
-            setTheme("dark");
-          }
-        }}
+        leftAction={toggleTheme}
         rightContent={
           <Ionicons
             name="log-out"
@@ -82,39 +84,16 @@ export default function ({
             color={isDarkmode ? themeColor.white100 : themeColor.dark}
           />
         }
-        rightAction={async () => {
-          const { error } = await supabase.auth.signOut();
-          if (!error) {
-            alert("Signed out!");
-          }
-          if (error) {
-            alert(error.message);
-          }
-        }}
+        rightAction={logout}
       />
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Section style={{ marginTop: 20, width: '100%', height: '100%' }}>
+      <View style={styles.container} >
+        <Section style={styles.section}>
           <SectionContent>
-          <FlatList
-            data={contacts}
-            renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
-            scrollEnabled={true}
-            />
-          <Button
-              text="Go to second screen"
-              onPress={() => {
-                navigation.navigate("SecondScreen");
-              }}
-              style={{
-                marginTop: 10,
-              }}
+            <FlatList
+              data={contacts}
+              renderItem={renderItem}
+              keyExtractor={item => item.id.toString()}
+              scrollEnabled={true}
             />
           </SectionContent>
         </Section>
@@ -124,6 +103,16 @@ export default function ({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  section: {
+    marginTop: 20,
+    width: '100%',
+    height: '100%',
+  },
   contactCard: {
     borderColor: '#4169e1',
     borderRadius: 10,
