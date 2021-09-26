@@ -25,7 +25,7 @@ export default function ({
   const [loading, setLoading] = useState(true)
   const [contacts, setContacts] = useState<Array<Contact>>([])
 
-  const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} />
+  const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
 
   const toggleTheme = () => {
     if (isDarkmode) {

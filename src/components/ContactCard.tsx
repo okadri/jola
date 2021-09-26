@@ -4,34 +4,44 @@ import { useNavigation } from '@react-navigation/native';
 import { Contact } from '../types/contact'
 
 
-const ContactCard = ({item}: {item: Contact}) => {
+const ContactCard = ({item, isDarkMode}: {item: Contact, isDarkMode: string}) => {
     const navigation = useNavigation();
     return (
         <TouchableOpacity style={styles.contactCard} onPress={() => {
           navigation.navigate("SecondScreen");
         }}>
-          <Text style={styles.contactName}>{item.name}</Text>
-          <Text style={styles.contactAddress}>{item.street}, {item.city}, {item.zipcode}</Text>
+          <Text style={isDarkMode ? styles.contactNameDark : styles.contactNameLight}>{item.name}</Text>
+          <Text style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>{item.street}, {item.city}, {item.zipcode}</Text>
         </TouchableOpacity>
       );  
 };
 
 const styles = StyleSheet.create({
     contactCard: {
-      borderColor: '#4169e1',
-      borderRadius: 10,
+      borderColor: '#cecece',
       borderStyle: 'solid',
-      borderWidth: 1,
+      borderBottomWidth: 1,
       padding: 10,
-      marginBottom: 5,
+      marginTop: 10,
+      marginBottom: 10,
     },
-    contactName: {
+    contactNameLight: {
       fontSize: 20,
       textAlign: 'left',
     },
-    contactAddress: {
+    contactAddressLight: {
       fontSize: 12,
       textAlign: 'left',
+    },
+    contactNameDark: {
+      fontSize: 20,
+      textAlign: 'left',
+      color: '#eee'
+    },
+    contactAddressDark: {
+      fontSize: 12,
+      textAlign: 'left',
+      color: '#eee'
     },
 });
 
