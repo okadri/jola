@@ -11,7 +11,7 @@ const ContactCard = ({item, isDarkMode}: {item: Contact, isDarkMode: string}) =>
           navigation.navigate("SecondScreen");
         }}>
           <Text style={isDarkMode ? styles.contactNameDark : styles.contactNameLight}>{item.name}</Text>
-          <Text style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>{item.street}, {item.city}, {item.zipcode}</Text>
+          <Text style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>{item.street}, {item.city} {item.state}, {item.zipcode}</Text>
         </TouchableOpacity>
       );  
 };

@@ -5,6 +5,7 @@ export type Contact = {
     phone: string
     street: string
     city: string
+    state: string
     zipcode: string
     notes: string
     created_at: Date
