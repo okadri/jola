@@ -55,7 +55,13 @@ export default function ({
       const user = supabase.auth.user()
       const { data: contacts, error } = await supabase
         .from<Contact>('contacts')
-        .select('*')
+        .select(`
+          *,
+          country_of_origin (
+            name
+          )
+        `)
+        console.log(contacts)
 
       if (error) console.log('error', error)
       else setContacts(contacts!)
