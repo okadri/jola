@@ -61,7 +61,6 @@ export default function ({
             name
           )
         `)
-        console.log(contacts)
 
       if (error) console.log('error', error)
       else setContacts(contacts!)

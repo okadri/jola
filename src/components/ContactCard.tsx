@@ -12,11 +12,11 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
             navigation.navigate("SecondScreen");
         }}>
                 <Text
-                    style={isDarkMode ? styles.contactNameDark : styles.contactNameLight}>
+                    style={[styles.name, isDarkMode ? styles.textDark : null]}>
                         {item.name}
                 </Text>
                 <Text
-                    style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>
+                    style={[styles.address, isDarkMode ? styles.textDark : null]}>
                         {item.street}, {item.city}, {item.state} {item.zipcode}
                 </Text>
                 {item.country_of_origin ? 
@@ -37,25 +37,17 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomWidth: 1,
         padding: 10,
-        marginTop: 10,
         marginBottom: 10,
     },
-    contactNameLight: {
+    name: {
         fontSize: 20,
         textAlign: 'left',
     },
-    contactAddressLight: {
+    address: {
         fontSize: 12,
         textAlign: 'left',
     },
-    contactNameDark: {
-        fontSize: 20,
-        textAlign: 'left',
-        color: '#eee'
-    },
-    contactAddressDark: {
-        fontSize: 12,
-        textAlign: 'left',
+    textDark: {
         color: '#eee'
     },
     flag : {
