@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Contact } from '../types/contact'
+import Icon from 'react-native-ico-flags';
+import { Contact } from '../types/contact';
 
 
 const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean | undefined }) => {
@@ -10,9 +11,22 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
         <TouchableOpacity style={styles.contactCard} onPress={() => {
             navigation.navigate("SecondScreen");
         }}>
-            <Text style={isDarkMode ? styles.contactNameDark : styles.contactNameLight}>{item.name}</Text>
-            <Text style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>{item.street}, {item.city} {item.state}, {item.zipcode}</Text>
-            <Text style={isDarkMode ? styles.countryDark : styles.countryLight}>{item.country_of_origin.name}</Text>
+                <Text
+                    style={isDarkMode ? styles.contactNameDark : styles.contactNameLight}>
+                        {item.name}
+                </Text>
+                <Text
+                    style={isDarkMode ? styles.contactAddressDark : styles.contactAddressLight}>
+                        {item.street}, {item.city}, {item.state} {item.zipcode}
+                </Text>
+                {item.country_of_origin ? 
+                    <Icon
+                        style={styles.flag}
+                        name={item.country_of_origin.name.toLowerCase()}
+                        width='30'
+                        height='30'
+                    />
+                : null}
         </TouchableOpacity>
     );
 };
@@ -34,10 +48,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'left',
     },
-    countryLight: {
-        fontSize: 12,
-        textAlign: 'left',
-      },
     contactNameDark: {
         fontSize: 20,
         textAlign: 'left',
@@ -48,11 +58,12 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#eee'
     },
-    countryDark: {
-        fontSize: 12,
-        textAlign: 'left',
-        color: '#eee'
-    },
+    flag : {
+        opacity: 0.7,
+        right: 10,
+        top: '50%',
+        position: 'absolute',
+    }
   });
 
 export default ContactCard;
