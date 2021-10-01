@@ -59,6 +59,9 @@ export default function ({
           *,
           country_of_origin (
             name
+          ),
+          languages (
+            name
           )
         `)
 

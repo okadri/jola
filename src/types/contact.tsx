@@ -2,6 +2,10 @@ export type Country = {
     name: string
     code: string
 }
+export type Language = {
+    name: string
+    code: string
+}
 export type Contact = {
     id: string
     name: string
@@ -15,5 +19,6 @@ export type Contact = {
     created_at: Date
     updated_at: Date
     country_of_origin: Country
+    languages: Language[]
 };
   

@@ -19,6 +19,12 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
                     style={[styles.address, isDarkMode ? styles.textDark : null]}>
                         {item.street}, {item.city}, {item.state} {item.zipcode}
                 </Text>
+                {item.languages.length ? 
+                    <Text
+                        style={[styles.address, isDarkMode ? styles.textDark : null]}>
+                            Languages: {item.languages.map(l => l.name).join(', ')}
+                    </Text>
+                : null}
                 {item.country_of_origin ? 
                     <Icon
                         style={styles.flag}
