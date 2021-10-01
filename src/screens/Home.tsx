@@ -58,10 +58,12 @@ export default function ({
         .select(`
           *,
           country_of_origin (
-            name
+            name,
+            code
           ),
           languages (
-            name
+            name,
+            code
           )
         `)
 

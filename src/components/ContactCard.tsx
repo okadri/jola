@@ -1,9 +1,8 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-ico-flags';
 import { Contact } from '../types/contact';
-
+import { Avatar } from 'react-native-rapi-ui';
 
 const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean | undefined }) => {
     const navigation = useNavigation();
@@ -26,11 +25,11 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
                     </Text>
                 : null}
                 {item.country_of_origin ? 
-                    <Icon
+                    <Avatar
                         style={styles.flag}
-                        name={item.country_of_origin.name.toLowerCase()}
-                        width='30'
-                        height='30'
+                        source={{ uri: `https://www.countryflags.io/${item.country_of_origin.code.toLowerCase()}/shiny/64.png` }}
+                        size="md"
+                        shape="rounded"
                     />
                 : null}
         </TouchableOpacity>
@@ -57,9 +56,8 @@ const styles = StyleSheet.create({
         color: '#eee'
     },
     flag : {
-        opacity: 0.7,
         right: 10,
-        top: '50%',
+        top: '30%',
         position: 'absolute',
     }
   });
