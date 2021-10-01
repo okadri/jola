@@ -10,11 +10,13 @@ import {
   useTheme,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { selectCurrentContact } from "../store/contact/selectors";
 
 export default function ({
   navigation,
 }: StackScreenProps<MainStackParamList, "SecondScreen">) {
   const { isDarkmode, setTheme } = useTheme();
+  const contact = selectCurrentContact();
   return (
     <Layout>
       <TopNav
@@ -50,7 +52,7 @@ export default function ({
         }}
       >
         {/* This text using ubuntu font */}
-        <Text fontWeight="bold">This is the second screen</Text>
+        <Text fontWeight="bold">{contact?.name}</Text>
       </View>
     </Layout>
   );

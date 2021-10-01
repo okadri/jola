@@ -1,15 +1,21 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Contact } from '../types/contact';
+import { Contact } from "../store/contact/model";
 import { Avatar } from 'react-native-rapi-ui';
+import { useDispatch } from "react-redux";
+import { setCurrentContact } from "../store/contact/actions";
 
 const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean | undefined }) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const displayContact = () => {
+        dispatch(setCurrentContact(item));
+        navigation.navigate("SecondScreen");
+    }
     return (
-        <TouchableOpacity style={styles.contactCard} onPress={() => {
-            navigation.navigate("SecondScreen");
-        }}>
+        <TouchableOpacity style={styles.contactCard} onPress={() => displayContact() }>
                 <Text
                     style={[styles.name, isDarkMode ? styles.textDark : null]}>
                         {item.name}

@@ -13,17 +13,21 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 import ContactCard from "../components/ContactCard";
-import { Contact } from '../types/contact'
+import { Contact } from "../store/contact/model";
 
 /** URL polyfill. Required for Supabase queries to work in React Native. */
 import 'react-native-url-polyfill/auto'
+import { useDispatch } from "react-redux";
+import { loadContacts } from "../store/contact/actions";
+import { selectContacts } from "../store/contact/selectors";
 
 export default function ({
   navigation,
 }: StackScreenProps<MainStackParamList, "MainTabs">) {
   const { isDarkmode, setTheme } = useTheme();
   const [loading, setLoading] = useState(true)
-  const [contacts, setContacts] = useState<Array<Contact>>([])
+  const contacts = selectContacts();
+  const dispatch = useDispatch();
 
   const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
 
@@ -68,7 +72,7 @@ export default function ({
         `)
 
       if (error) console.log('error', error)
-      else setContacts(contacts!)
+      else dispatch(loadContacts(contacts!))
     } catch (error) {
       console.log('error', error)
     } finally {

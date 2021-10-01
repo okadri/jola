@@ -1,8 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { ThemeProvider } from "react-native-rapi-ui";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 import Navigation from "./src/navigation";
 import { AuthProvider } from "./src/provider/AuthProvider";
+import { rootReducer } from "./src/store/rootReducer";
+
+const store = createStore(rootReducer);
 
 export default function App() {
   const images = [
@@ -13,7 +18,9 @@ export default function App() {
   return (
     <ThemeProvider images={images}>
       <AuthProvider>
-        <Navigation />
+        <Provider store={store}>
+          <Navigation />
+        </Provider>
       </AuthProvider>
       <StatusBar />
     </ThemeProvider>
