@@ -82,7 +82,10 @@ export default function () {
                   keyExtractor={item => item.id.toString()}
                   scrollEnabled={true}
                 /> :
-                <Text style={styles.noResults}>No Results!</Text>
+                <Text
+                  style={[styles.noResults, isDarkmode ? styles.textDark : null]}>
+                    No Results!
+                </Text>
               }
             </SectionContent>
           </Section>
@@ -114,6 +117,9 @@ const styles = StyleSheet.create({
   contactName: {
     fontSize: 20,
     textAlign: 'center',
+  },
+  textDark: {
+    color: themeColor.white100,
   },
   noResults: {
     marginTop: 30,

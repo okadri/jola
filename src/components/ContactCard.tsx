@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Contact } from "../store/contact/model";
-import { Avatar } from 'react-native-rapi-ui';
+import { Avatar, themeColor } from 'react-native-rapi-ui';
 import { useDispatch } from "react-redux";
 import { setCurrentContact } from "../store/contact/actions";
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
     },
     textDark: {
-        color: '#eee'
+        color: themeColor.white100,
     },
     flag : {
         right: 10,
