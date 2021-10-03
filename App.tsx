@@ -2,12 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { ThemeProvider } from "react-native-rapi-ui";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
 import Navigation from "./src/navigation";
 import { AuthProvider } from "./src/provider/AuthProvider";
-import { rootReducer } from "./src/store/rootReducer";
-
-const store = createStore(rootReducer);
+import { store } from "./src/store/rootReducer";
+/** URL polyfill. Required for Supabase queries to work in React Native. */
+import 'react-native-url-polyfill/auto'
 
 export default function App() {
   const images = [

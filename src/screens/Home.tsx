@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
-import { MainStackParamList } from "../types/navigation";
-import { StackScreenProps } from "@react-navigation/stack";
+import React, { useEffect } from "react";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { supabase } from "../initSupabase";
 import {
   Layout,
@@ -15,17 +13,13 @@ import { Ionicons } from "@expo/vector-icons";
 import ContactCard from "../components/ContactCard";
 import { Contact } from "../store/contact/model";
 
-/** URL polyfill. Required for Supabase queries to work in React Native. */
-import 'react-native-url-polyfill/auto'
 import { useDispatch } from "react-redux";
 import { loadContacts } from "../store/contact/actions";
-import { selectContacts } from "../store/contact/selectors";
+import { selectContacts, selectLoadingContacts } from "../store/contact/selectors";
 
-export default function ({
-  navigation,
-}: StackScreenProps<MainStackParamList, "MainTabs">) {
+export default function () {
   const { isDarkmode, setTheme } = useTheme();
-  const [loading, setLoading] = useState(true)
+  const loadingContacts = selectLoadingContacts();
   const contacts = selectContacts();
   const dispatch = useDispatch();
 
@@ -50,35 +44,9 @@ export default function ({
   }
 
   useEffect(() => {
-    getContacts()
-  }, [])
+    dispatch(loadContacts());
+  }, [dispatch]);
 
-  async function getContacts() {
-    try {
-      setLoading(true)
-      const user = supabase.auth.user()
-      const { data: contacts, error } = await supabase
-        .from<Contact>('contacts')
-        .select(`
-          *,
-          country_of_origin (
-            name,
-            code
-          ),
-          languages (
-            name,
-            code
-          )
-        `)
-
-      if (error) console.log('error', error)
-      else dispatch(loadContacts(contacts!))
-    } catch (error) {
-      console.log('error', error)
-    } finally {
-      setLoading(false)
-    }
-  }
   return (
     <Layout>
       <TopNav
@@ -101,16 +69,19 @@ export default function ({
         rightAction={logout}
       />
       <View style={styles.container} >
-        <Section style={styles.section}>
-          <SectionContent>
-            <FlatList
-              data={contacts}
-              renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
-              scrollEnabled={true}
-            />
-          </SectionContent>
-        </Section>
+        { loadingContacts ?
+          <ActivityIndicator size="large" /> :
+          <Section style={styles.section}>
+            <SectionContent>
+              <FlatList
+                data={contacts}
+                renderItem={renderItem}
+                keyExtractor={item => item.id.toString()}
+                scrollEnabled={true}
+              />
+            </SectionContent>
+          </Section>
+        }
       </View>
     </Layout>
   );
