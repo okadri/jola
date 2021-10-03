@@ -15,12 +15,13 @@ import { Contact } from "../store/contact/model";
 
 import { useDispatch } from "react-redux";
 import { loadContacts } from "../store/contact/actions";
-import { selectContacts, selectLoadingContacts } from "../store/contact/selectors";
+import { selectFileterdContacts, selectLoadingContacts } from "../store/contact/selectors";
+import Toolbar from "../components/Toolbar";
 
 export default function () {
   const { isDarkmode, setTheme } = useTheme();
   const loadingContacts = selectLoadingContacts();
-  const contacts = selectContacts();
+  const contacts = selectFileterdContacts();
   const dispatch = useDispatch();
 
   const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
@@ -73,6 +74,7 @@ export default function () {
           <ActivityIndicator size="large" /> :
           <Section style={styles.section}>
             <SectionContent>
+              <Toolbar isDarkMode={isDarkmode} />
               <FlatList
                 data={contacts}
                 renderItem={renderItem}
