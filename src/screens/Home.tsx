@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { loadContacts } from "../store/contact/actions";
 import { selectFileterdContacts, selectLoadingContacts } from "../store/contact/selectors";
 import Toolbar from "../components/Toolbar";
+import OptionsModal from "../components/OptionsModal";
 
 export default function () {
   const { isDarkmode, setTheme } = useTheme();
@@ -74,6 +75,7 @@ export default function () {
           <ActivityIndicator size="large" /> :
           <Section style={styles.section}>
             <SectionContent>
+              <OptionsModal isDarkMode={isDarkmode} />
               <Toolbar isDarkMode={isDarkmode} />
               { contacts && contacts.length > 0 ?
                 <FlatList

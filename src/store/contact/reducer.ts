@@ -7,11 +7,13 @@ export interface ContactState {
     loading: boolean;
     searchCriteria?: string;
     filteredContacts?: Contact[];
+    showOptions: boolean;
 }
 
 const initialState: ContactState = {
     contacts: [],
     loading: true,
+    showOptions: false,
 }
 
 export const contactReducer = (state: ContactState = initialState, action: any) => {
@@ -23,6 +25,9 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
 
         case ContactActionTypes.SET_CURRENT_CONTACT:
             return { ...state, currentContact: payload };
+
+        case ContactActionTypes.SET_SHOW_OPTIONS:
+            return { ...state, showOptions: payload };
 
         case ContactActionTypes.SET_SEARCH_CRITERIA:
             let newState = { ...state, searchCriteria: payload };

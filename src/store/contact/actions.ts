@@ -5,6 +5,7 @@ export enum ContactActionTypes {
     SET_CONTACTS = 'contact/SET_CONTACTS',
     SET_CURRENT_CONTACT = 'contact/SET_CURRENT_CONTACT',
     SET_SEARCH_CRITERIA = 'contact/SET_SEARCH_CRITERIA',
+    SET_SHOW_OPTIONS = 'contact/SET_SHOW_OPTIONS',
 }
 
 export const loadContacts = () => ({
@@ -25,4 +26,9 @@ export const setCurrentContact = (contact: Contact) => ({
 export const setSearchCriteria = (searchCriteria: string) => ({
     type: ContactActionTypes.SET_SEARCH_CRITERIA,
     payload: searchCriteria,
+});
+
+export const setShowOptions = (showOptions: boolean) => ({
+    type: ContactActionTypes.SET_SHOW_OPTIONS,
+    payload: showOptions,
 });

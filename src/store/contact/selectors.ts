@@ -16,3 +16,6 @@ export const selectLoadingContacts = (): boolean =>
 
 export const selectSearchCriteria = (): string | undefined =>
     useSelector((state: RootState) => state.contact.searchCriteria);
+
+export const selectShowOptions = (): boolean =>
+    useSelector((state: RootState) => state.contact.showOptions);

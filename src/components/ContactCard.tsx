@@ -15,6 +15,7 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
         navigation.navigate("SecondScreen");
     }
     return (
+        // Consider Pressable
         <TouchableOpacity style={styles.contactCard} onPress={() => displayContact() }>
                 <Text
                     style={[styles.name, isDarkMode ? styles.textDark : null]}>
