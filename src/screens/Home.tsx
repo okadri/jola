@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
 import { supabase } from "../initSupabase";
 import {
   Layout,
@@ -75,12 +75,15 @@ export default function () {
           <Section style={styles.section}>
             <SectionContent>
               <Toolbar isDarkMode={isDarkmode} />
-              <FlatList
-                data={contacts}
-                renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
-                scrollEnabled={true}
-              />
+              { contacts && contacts.length > 0 ?
+                <FlatList
+                  data={contacts}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id.toString()}
+                  scrollEnabled={true}
+                /> :
+                <Text style={styles.noResults}>No Results!</Text>
+              }
             </SectionContent>
           </Section>
         }
@@ -111,5 +114,9 @@ const styles = StyleSheet.create({
   contactName: {
     fontSize: 20,
     textAlign: 'center',
+  },
+  noResults: {
+    marginTop: 30,
+    alignSelf: "center",
   },
 });

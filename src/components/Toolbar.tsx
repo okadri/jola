@@ -10,7 +10,8 @@ const Toolbar = ({ isDarkMode }: { isDarkMode: boolean | undefined }) => {
     const dispatch = useDispatch();
     const searchCriteria = selectSearchCriteria();
 
-    const handleSearch = (criteria : string) => dispatch(setSearchCriteria(criteria))
+    const handleSearch = (criteria : string) => dispatch(setSearchCriteria(criteria));
+    const clearCriteria = () => dispatch(setSearchCriteria(""));
 
     return (
         <View style={styles.container}>
@@ -19,7 +20,12 @@ const Toolbar = ({ isDarkMode }: { isDarkMode: boolean | undefined }) => {
                 value={searchCriteria}
                 onChangeText={(val) => handleSearch(val)}
                 rightContent={
-                    <Ionicons name="search" size={20} color='#999' />
+                    <Ionicons
+                        name={searchCriteria ? "close" : "search"}
+                        size={20}
+                        color='#999'
+                        onPress={clearCriteria}
+                    />
                 }
             />
         </View>
