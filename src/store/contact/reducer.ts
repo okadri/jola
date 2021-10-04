@@ -1,4 +1,4 @@
-import { ContactActionTypes } from "./actions";
+import { ContactActionTypes, SortByOptions } from "./actions";
 import { Contact } from "./model";
 
 export interface ContactState {
@@ -8,12 +8,14 @@ export interface ContactState {
     searchCriteria?: string;
     filteredContacts?: Contact[];
     showOptions: boolean;
+    sortBy: SortByOptions;
 }
 
 const initialState: ContactState = {
     contacts: [],
     loading: true,
     showOptions: false,
+    sortBy: SortByOptions.SMART,
 }
 
 export const contactReducer = (state: ContactState = initialState, action: any) => {
@@ -28,6 +30,9 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
 
         case ContactActionTypes.SET_SHOW_OPTIONS:
             return { ...state, showOptions: payload };
+
+        case ContactActionTypes.SET_SORT_BY:
+            return { ...state, sortBy: payload };
 
         case ContactActionTypes.SET_SEARCH_CRITERIA:
             let newState = { ...state, searchCriteria: payload };

@@ -6,6 +6,14 @@ export enum ContactActionTypes {
     SET_CURRENT_CONTACT = 'contact/SET_CURRENT_CONTACT',
     SET_SEARCH_CRITERIA = 'contact/SET_SEARCH_CRITERIA',
     SET_SHOW_OPTIONS = 'contact/SET_SHOW_OPTIONS',
+    SET_SORT_BY = 'contact/SET_SORT_BY',
+}
+
+export enum SortByOptions {
+    SMART = 'Smart Sorting',
+    NAME = 'Alphabetical',
+    LAST_VISIT = 'Last Visit',
+    DISTANCE = 'Distance',
 }
 
 export const loadContacts = () => ({
@@ -31,4 +39,9 @@ export const setSearchCriteria = (searchCriteria: string) => ({
 export const setShowOptions = (showOptions: boolean) => ({
     type: ContactActionTypes.SET_SHOW_OPTIONS,
     payload: showOptions,
+});
+
+export const setSortBy = (sortBy: SortByOptions) => ({
+    type: ContactActionTypes.SET_SORT_BY,
+    payload: sortBy,
 });

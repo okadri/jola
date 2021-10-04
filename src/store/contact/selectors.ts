@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../rootReducer";
+import { SortByOptions } from "./actions";
 import { Contact } from "./model";
 
 export const selectContacts = (): Contact[] =>
@@ -19,3 +20,6 @@ export const selectSearchCriteria = (): string | undefined =>
 
 export const selectShowOptions = (): boolean =>
     useSelector((state: RootState) => state.contact.showOptions);
+
+export const selectSortBy = (): SortByOptions =>
+    useSelector((state: RootState) => state.contact.sortBy);
