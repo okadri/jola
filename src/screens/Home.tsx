@@ -15,14 +15,14 @@ import { Contact } from "../store/contact/model";
 
 import { useDispatch } from "react-redux";
 import { loadContacts } from "../store/contact/actions";
-import { selectFileterdContacts, selectLoadingContacts } from "../store/contact/selectors";
+import { selectDisplayContacts, selectLoadingContacts } from "../store/contact/selectors";
 import Toolbar from "../components/Toolbar";
 import OptionsModal from "../components/OptionsModal";
 
 export default function () {
   const { isDarkmode, setTheme } = useTheme();
   const loadingContacts = selectLoadingContacts();
-  const contacts = selectFileterdContacts();
+  const contacts = selectDisplayContacts();
   const dispatch = useDispatch();
 
   const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />

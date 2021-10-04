@@ -6,8 +6,8 @@ import { Contact } from "./model";
 export const selectContacts = (): Contact[] =>
     useSelector((state: RootState) => state.contact.contacts);
 
-export const selectFileterdContacts = (): Contact[] | undefined =>
-    useSelector((state: RootState) => state.contact.filteredContacts);
+export const selectDisplayContacts = (): Contact[] =>
+    useSelector((state: RootState) => state.contact.displayContacts);
 
 export const selectCurrentContact = (): Contact | undefined =>
     useSelector((state: RootState) => state.contact.currentContact);

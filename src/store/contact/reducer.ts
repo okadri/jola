@@ -5,46 +5,75 @@ export interface ContactState {
     contacts: Contact[];
     currentContact?: Contact;
     loading: boolean;
-    searchCriteria?: string;
-    filteredContacts?: Contact[];
+    searchCriteria: string;
+    displayContacts: Contact[];
     showOptions: boolean;
     sortBy: SortByOptions;
 }
 
 const initialState: ContactState = {
     contacts: [],
+    displayContacts: [],
     loading: true,
     showOptions: false,
     sortBy: SortByOptions.SMART,
+    searchCriteria: "",
 }
+
+const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter: string) => {
+    let newContacts = [];
+    switch (sortOption) {
+        case SortByOptions.SMART:
+        case SortByOptions.NAME:
+            newContacts = contacts.sort((a: Contact, b: Contact) =>
+                a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0
+            );
+            break;
+        case SortByOptions.LAST_VISIT:
+        case SortByOptions.DISTANCE:
+            newContacts = contacts.sort((a: Contact, b: Contact) =>
+                a.street.toLowerCase() > b.street.toLowerCase() ? 1 : a.street.toLowerCase() < b.street.toLowerCase() ? -1 : 0
+            );
+            break;
+        default:
+            newContacts = contacts;
+    };
+    return newContacts.filter(contact =>
+        JSON.stringify(contact).toLowerCase().indexOf(filter.toLowerCase()) > -1
+    );
+};
 
 export const contactReducer = (state: ContactState = initialState, action: any) => {
     const { type, payload } = action;
+    let newState = { ...state };
 
     switch (type) {
         case ContactActionTypes.SET_CONTACTS:
-            return { ...state, contacts: payload, filteredContacts: payload, loading: false };
+            newState.contacts = newState.displayContacts = sortAndFilterBy(payload, state.sortBy, state.searchCriteria);
+            newState.loading = false;
+            break;
 
         case ContactActionTypes.SET_CURRENT_CONTACT:
-            return { ...state, currentContact: payload };
+            newState.currentContact = payload;
+            break;
 
         case ContactActionTypes.SET_SHOW_OPTIONS:
-            return { ...state, showOptions: payload };
+            newState.showOptions = payload;
+            break;
 
         case ContactActionTypes.SET_SORT_BY:
-            return { ...state, sortBy: payload };
+            newState.displayContacts = state.sortBy !== payload ?
+                sortAndFilterBy(state.contacts, payload, state.searchCriteria)
+                : newState.contacts;
+            newState.sortBy = payload;
+            break;
 
         case ContactActionTypes.SET_SEARCH_CRITERIA:
-            let newState = { ...state, searchCriteria: payload };
-            newState.filteredContacts = payload ?
-                newState.contacts.filter(contact =>
-                    JSON.stringify(contact).toLowerCase().indexOf(payload.toLowerCase()) > -1
-                )
-                : newState.contacts;
-
-            return newState;
-
-        default:
-            return state;
-    }
+            newState.searchCriteria = payload;
+            newState.displayContacts = payload ?
+                sortAndFilterBy(state.contacts, state.sortBy, payload)
+                : state.contacts;
+            break;
+    };
+    return newState;
 };
