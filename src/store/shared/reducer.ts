@@ -1,10 +1,11 @@
 import { SharedActionTypes } from "./actions";
 
 export interface SharedState {
-    confirmLogout?: boolean;
+    confirmLogout: boolean;
 }
 
 const initialState: SharedState = {
+    confirmLogout: false,
 }
 
 export const sharedReducer = (state: SharedState = initialState, action: any) => {
