@@ -18,12 +18,18 @@ import { loadContacts } from "../store/contact/actions";
 import { selectDisplayContacts, selectLoadingContacts } from "../store/contact/selectors";
 import Toolbar from "../components/Toolbar";
 import OptionsModal from "../components/OptionsModal";
+import ConfirmModal from "../components/ConfirmModal";
+import { confirmLogout } from "../store/shared/actions";
+import { selectConfirmLogout } from "../store/shared/selectors";
 
 export default function () {
   const { isDarkmode, setTheme } = useTheme();
   const loadingContacts = selectLoadingContacts();
+  const showLogoutConfirm = selectConfirmLogout();
   const contacts = selectDisplayContacts();
   const dispatch = useDispatch();
+  const logout = () => dispatch(confirmLogout(true));
+  const hideLogout = () => dispatch(confirmLogout(false));
 
   const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
 
@@ -35,7 +41,8 @@ export default function () {
     }
   };
 
-  const logout = async () => {
+  const doLogout = async () => {
+    hideLogout();
     const { error } = await supabase.auth.signOut();
     if (!error) {
       alert("Signed out!");
@@ -70,12 +77,20 @@ export default function () {
         }
         rightAction={logout}
       />
+      <OptionsModal isDarkMode={isDarkmode} />
+      <ConfirmModal
+        isDarkMode={isDarkmode}
+        showConfirmation={showLogoutConfirm}
+        message="Are you sure you want to logout?"
+        confirmBtnTxt="Yes"
+        confirmAction={doLogout}
+        cancelAction={hideLogout}
+        />
       <View style={styles.container} >
         { loadingContacts ?
           <ActivityIndicator size="large" /> :
           <Section style={styles.section}>
             <SectionContent>
-              <OptionsModal isDarkMode={isDarkmode} />
               <Toolbar isDarkMode={isDarkmode} />
               { contacts && contacts.length > 0 ?
                 <FlatList

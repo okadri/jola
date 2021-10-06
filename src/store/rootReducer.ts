@@ -1,10 +1,12 @@
 // https://youtu.be/DYBuMh553yc
 import { applyMiddleware, combineReducers, createStore } from "redux";
+import { sharedReducer } from "./shared/reducer";
 import { contactReducer } from "./contact/reducer";
 import createSagaMiddleware from "@redux-saga/core";
 import rootSaga from "./sagas/rootSaga";
 
 export const rootReducer = combineReducers({
+    shared: sharedReducer,
     contact: contactReducer,
 });
 

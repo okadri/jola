@@ -1,5 +1,5 @@
-import { Country } from "../country/model";
-import { Language } from "../language/model";
+import { Country } from "../shared/model";
+import { Language } from "../shared/model";
 
 export interface Contact {
     id: string;
