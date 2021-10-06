@@ -10,6 +10,7 @@ import {
   themeColor,
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
+import { FloatingAction } from "react-native-floating-action";
 import ContactCard from "../components/ContactCard";
 import { Contact } from "../store/contact/model";
 
@@ -21,8 +22,10 @@ import OptionsModal from "../components/OptionsModal";
 import ConfirmModal from "../components/ConfirmModal";
 import { confirmLogout } from "../store/shared/actions";
 import { selectConfirmLogout } from "../store/shared/selectors";
+import { useNavigation } from "@react-navigation/core";
 
 export default function () {
+  const navigation = useNavigation();
   const { isDarkmode, setTheme } = useTheme();
   const loadingContacts = selectLoadingContacts();
   const showLogoutConfirm = selectConfirmLogout();
@@ -32,6 +35,26 @@ export default function () {
   const hideLogout = () => dispatch(confirmLogout(false));
 
   const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
+
+  const runAction = (action: string | undefined) => {
+    switch (action) {
+      case "create":
+        navigation.navigate("SecondScreen");        
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const actions = [
+    {
+      text: "Create Contact",
+      icon: require("../../assets/images/add.png"),
+      name: "create",
+      position: 1,
+    },
+  ];
 
   const toggleTheme = () => {
     if (isDarkmode) {
@@ -105,6 +128,12 @@ export default function () {
                 </Text>
               }
             </SectionContent>
+            <FloatingAction
+              actions={actions}
+              overrideWithAction={true} // Remove when adding more actions
+              onPressItem={name => {
+                runAction(name);
+              }} />
           </Section>
         }
       </View>
