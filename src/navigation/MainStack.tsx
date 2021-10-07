@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SecondScreen from '../screens/SecondScreen';
+import ContactScreen from '../screens/ContactScreen';
 import MainTabs from './MainTabs';
 
 const MainStack = createStackNavigator();
@@ -13,7 +13,7 @@ const Main = () => {
 			}}
 		>
 			<MainStack.Screen name="MainTabs" component={MainTabs} />
-			<MainStack.Screen name="SecondScreen" component={SecondScreen} />
+			<MainStack.Screen name="Contact Screen" component={ContactScreen} />
 		</MainStack.Navigator>
 	);
 };

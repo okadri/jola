@@ -12,7 +12,7 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
 
     const displayContact = () => {
         dispatch(setCurrentContact(item));
-        navigation.navigate("SecondScreen");
+        navigation.navigate("Contact Screen");
     }
     return (
         // Consider Pressable

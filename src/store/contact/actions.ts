@@ -26,7 +26,7 @@ export const setContacts = (contacts: Contact[]) => ({
     payload: contacts,
 });
 
-export const setCurrentContact = (contact: Contact) => ({
+export const setCurrentContact = (contact?: Contact) => ({
     type: ContactActionTypes.SET_CURRENT_CONTACT,
     payload: contact,
 });

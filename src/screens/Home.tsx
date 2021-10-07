@@ -15,7 +15,7 @@ import ContactCard from "../components/ContactCard";
 import { Contact } from "../store/contact/model";
 
 import { useDispatch } from "react-redux";
-import { loadContacts } from "../store/contact/actions";
+import { loadContacts, setCurrentContact } from "../store/contact/actions";
 import { selectDisplayContacts, selectLoadingContacts } from "../store/contact/selectors";
 import Toolbar from "../components/Toolbar";
 import OptionsModal from "../components/OptionsModal";
@@ -39,7 +39,8 @@ export default function () {
   const runAction = (action: string | undefined) => {
     switch (action) {
       case "create":
-        navigation.navigate("SecondScreen");        
+        dispatch(setCurrentContact());
+        navigation.navigate("Contact Screen");        
         break;
     
       default:
