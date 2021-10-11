@@ -40,9 +40,9 @@ export default function () {
     switch (action) {
       case "create":
         dispatch(setCurrentContact());
-        navigation.navigate("Contact Screen");        
+        navigation.navigate("Contact Screen");
         break;
-    
+
       default:
         break;
     }
@@ -109,35 +109,37 @@ export default function () {
         confirmBtnTxt="Yes"
         confirmAction={doLogout}
         cancelAction={hideLogout}
-        />
+      />
       <View style={styles.container} >
-        { loadingContacts ?
+        {loadingContacts ?
           <ActivityIndicator size="large" /> :
-          <Section style={styles.section}>
-            <SectionContent>
-              <Toolbar isDarkMode={isDarkmode} />
-              { contacts && contacts.length > 0 ?
-                <FlatList
-                  data={contacts}
-                  renderItem={renderItem}
-                  keyExtractor={item => item.id.toString()}
-                  scrollEnabled={true}
-                /> :
-                <Text
-                  style={[styles.noResults, isDarkmode ? styles.textDark : null]}>
+          <>
+            <Section style={styles.section}>
+              <SectionContent>
+                <Toolbar isDarkMode={isDarkmode} />
+                {contacts && contacts.length > 0 ?
+                  <FlatList
+                    data={contacts}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id.toString()}
+                    scrollEnabled={true}
+                  /> :
+                  <Text
+                    style={[styles.noResults, isDarkmode ? styles.textDark : null]}>
                     No Results!
-                </Text>
-              }
-            </SectionContent>
-            <FloatingAction
-              actions={actions}
-              overrideWithAction={true} // Remove when adding more actions
-              onPressItem={name => {
-                runAction(name);
-              }} />
-          </Section>
+                  </Text>
+                }
+              </SectionContent>
+            </Section>
+          </>
         }
       </View>
+      <FloatingAction
+        actions={actions}
+        overrideWithAction={true} // Remove when adding more actions
+        onPressItem={name => {
+          runAction(name);
+        }} />
     </Layout>
   );
 }
@@ -146,12 +148,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   section: {
-    marginTop: 20,
-    width: '100%',
-    height: '100%',
+    marginTop: 10,
+    paddingBottom: 30,
+    flex: 1,
+    width: '95%'
   },
   contactCard: {
     borderColor: '#4169e1',

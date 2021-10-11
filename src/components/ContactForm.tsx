@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, KeyboardAvoidingView, KeyboardTypeOptions, Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Text, TextInput, themeColor } from 'react-native-rapi-ui';
+import { Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
 import { Field, reduxForm } from "redux-form";
 import { Contact } from "../store/contact/model";
 
@@ -65,21 +65,23 @@ const TheForm = (props: any) => {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <ScrollView style={styles.form}>
-            <Field component={RenderField} label="Full Name: " keyboardType="default" name="name" />
-            <Field component={RenderField} label="Email: " keyboardType="email-address" name="email" />
-            <Field component={RenderField} label="Phone: " keyboardType="numeric" name="phone" />
-            <Field component={RenderField} label="Street Address: " keyboardType="default" name="street" />
-            <Field component={RenderField} label="City: " keyboardType="default" name="city" />
-            <Field component={RenderField} label="State: " keyboardType="default" name="state" />
-            <Field component={RenderField} label="Zipcode: " keyboardType="numeric" name="zipcode" />
-            <Pressable
-                style={styles.button}
-                onPress={handleSubmit(submit)}
-            >
-                <Text style={styles.buttonText}>Create</Text>
-            </Pressable>
-        </ScrollView>
+            <ScrollView>
+                <Section style={styles.section}>
+                    <Field component={RenderField} label="Full Name: " keyboardType="default" name="name" />
+                    <Field component={RenderField} label="Email: " keyboardType="email-address" name="email" />
+                    <Field component={RenderField} label="Phone: " keyboardType="numeric" name="phone" />
+                    <Field component={RenderField} label="Street Address: " keyboardType="default" name="street" />
+                    <Field component={RenderField} label="City: " keyboardType="default" name="city" />
+                    <Field component={RenderField} label="State: " keyboardType="default" name="state" />
+                    <Field component={RenderField} label="Zipcode: " keyboardType="numeric" name="zipcode" />
+                    <Pressable
+                        style={styles.button}
+                        onPress={handleSubmit(submit)}
+                    >
+                        <Text style={styles.buttonText}>Create</Text>
+                    </Pressable>
+                </Section>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 };
@@ -93,17 +95,12 @@ const ContactForm = reduxForm({
 
 const styles = StyleSheet.create({
     container: {
-        display: "flex",
         flex: 1,
     },
-    form: {
+    section: {
         flex: 1,
         padding: 20,
         margin: 10,
-        backgroundColor: "#ffffff33",
-        borderRadius: 5,
-        borderColor: themeColor.gray100,
-        borderWidth: 1,
     },
     label: {
         marginTop: 10,
