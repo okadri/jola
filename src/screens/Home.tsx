@@ -136,6 +136,7 @@ export default function () {
       </View>
       <FloatingAction
         actions={actions}
+        color={themeColor.primary}
         overrideWithAction={true} // Remove when adding more actions
         onPressItem={name => {
           runAction(name);
