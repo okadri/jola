@@ -121,7 +121,7 @@ export default function () {
                   <FlatList
                     data={contacts}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id.toString()}
+                    keyExtractor={item => item.id? item.id.toString() : item.name}
                     scrollEnabled={true}
                   /> :
                   <Text

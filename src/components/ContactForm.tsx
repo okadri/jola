@@ -1,7 +1,9 @@
 import React from "react";
-import { Alert, KeyboardAvoidingView, KeyboardTypeOptions, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { KeyboardAvoidingView, KeyboardTypeOptions, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
+import { useDispatch } from "react-redux";
 import { Field, reduxForm } from "redux-form";
+import { createContact } from "../store/contact/actions";
 import { Contact } from "../store/contact/model";
 
 const validate = (values: any) => {
@@ -55,13 +57,15 @@ const RenderField = (
     );
 }
 
-const submit = (contact: Contact) => {
-    Alert.alert(`Validation success. Values = ${JSON.stringify(contact)}`);
-}
 
 const TheForm = (props: any) => {
-
+    
     const { handleSubmit } = props;
+    const dispatch = useDispatch();
+    
+    const submit = (contact: Contact) => {
+        dispatch(createContact(contact))
+    }
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">

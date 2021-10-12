@@ -74,6 +74,11 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
                 sortAndFilterBy(state.contacts, state.sortBy, payload)
                 : state.contacts;
             break;
+
+        case ContactActionTypes.ADD_CONTACT:
+            newState.contacts.push(payload);
+            newState.displayContacts = sortAndFilterBy(state.contacts, state.sortBy, state.searchCriteria);
+            break;
     };
     return newState;
 };

@@ -7,6 +7,8 @@ export enum ContactActionTypes {
     SET_SEARCH_CRITERIA = 'contact/SET_SEARCH_CRITERIA',
     SET_SHOW_OPTIONS = 'contact/SET_SHOW_OPTIONS',
     SET_SORT_BY = 'contact/SET_SORT_BY',
+    ADD_CONTACT = 'contact/ADD_CONTACT',
+    CREATE_CONTACT = 'contact/CREATE_CONTACT',
 }
 
 export enum SortByOptions {
@@ -44,4 +46,14 @@ export const setShowOptions = (showOptions: boolean) => ({
 export const setSortBy = (sortBy: SortByOptions) => ({
     type: ContactActionTypes.SET_SORT_BY,
     payload: sortBy,
+});
+
+export const createContact = (contact: Contact) => ({
+    type: ContactActionTypes.CREATE_CONTACT,
+    payload: contact,
+});
+
+export const addContact = (contact: Contact) => ({
+    type: ContactActionTypes.ADD_CONTACT,
+    payload: contact,
 });
