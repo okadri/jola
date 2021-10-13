@@ -60,11 +60,12 @@ const RenderField = (
 
 const TheForm = (props: any) => {
     
-    const { handleSubmit } = props;
+    const { onSubmit, handleSubmit } = props;
     const dispatch = useDispatch();
     
     const submit = (contact: Contact) => {
         dispatch(createContact(contact))
+        onSubmit(contact);
     }
 
     return (

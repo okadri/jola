@@ -38,9 +38,9 @@ const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter:
         default:
             newContacts = contacts;
     };
-    return newContacts.filter(contact =>
+    return filter ? newContacts.filter(contact =>
         JSON.stringify(contact).toLowerCase().indexOf(filter.toLowerCase()) > -1
-    );
+    ) : newContacts;
 };
 
 export const contactReducer = (state: ContactState = initialState, action: any) => {
@@ -76,8 +76,10 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             break;
 
         case ContactActionTypes.ADD_CONTACT:
-            newState.contacts.push(payload);
-            newState.displayContacts = sortAndFilterBy(state.contacts, state.sortBy, state.searchCriteria);
+            newState.contacts.push(payload[0]);
+            // console.log(payload, newState.contacts.map(c => c.id + c.name), state.sortBy, state.searchCriteria);
+            newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
+            newState.currentContact = payload;
             break;
     };
     return newState;

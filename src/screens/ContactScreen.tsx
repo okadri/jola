@@ -17,7 +17,9 @@ export default function ({
   navigation,
 }: StackScreenProps<MainStackParamList, "ContactScreen">) {
   const { isDarkmode, setTheme } = useTheme();
-  const contact = selectCurrentContact();
+  let contact = selectCurrentContact();
+  const handleSubmit = () => navigation.goBack();
+
   return (
     <Layout>
       <TopNav
@@ -47,7 +49,7 @@ export default function ({
       />
       { contact?.id ?
           <ContactProfile contact={contact} isDarkMode={isDarkmode} /> :
-          <ContactForm contact={contact} isDarkMode={isDarkmode} />
+          <ContactForm onSubmit={handleSubmit} />
       }
     </Layout>
   );
