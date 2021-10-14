@@ -75,11 +75,16 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
                 : state.contacts;
             break;
 
+        case ContactActionTypes.CREATE_CONTACT:
+            newState.loading = true;
+            break;
+
         case ContactActionTypes.ADD_CONTACT:
-            newState.contacts.push(payload[0]);
-            // console.log(payload, newState.contacts.map(c => c.id + c.name), state.sortBy, state.searchCriteria);
+            const newContact = payload[0];
+            newState.currentContact = newContact;
+            newState.contacts.push(newContact);
             newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
-            newState.currentContact = payload;
+            newState.loading = false;
             break;
     };
     return newState;

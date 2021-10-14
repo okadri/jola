@@ -9,14 +9,14 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 
-import { selectCurrentContact, selectLoadingContacts } from "../store/contact/selectors";
-import { Text, StyleSheet, ActivityIndicator } from "react-native";
+import { selectCurrentContact } from "../store/contact/selectors";
+import { Text, StyleSheet } from "react-native";
+import ContactForm from "../components/ContactForm";
 
 export default function ({
   navigation,
 }: StackScreenProps<MainStackParamList, "ContactScreen">) {
   const { isDarkmode, setTheme } = useTheme();
-  const loadingContact = selectLoadingContacts();
   let contact = selectCurrentContact();
 
   return (
@@ -46,13 +46,7 @@ export default function ({
           }
         }}
       />
-      {loadingContact ?
-        <ActivityIndicator size="large" /> :
-        <Text
-          style={[styles.name, isDarkmode ? styles.textDark : null]}>
-          {contact?.name}'s Profile
-        </Text>
-      }
+      <ContactForm onSubmit={() => navigation.replace("Contact Screen")} />
 
     </Layout>
   );
