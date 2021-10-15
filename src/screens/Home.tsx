@@ -101,9 +101,8 @@ export default function () {
         }
         rightAction={logout}
       />
-      <OptionsModal isDarkMode={isDarkmode} />
+      <OptionsModal />
       <ConfirmModal
-        isDarkMode={isDarkmode}
         showConfirmation={showLogoutConfirm}
         message="Are you sure you want to logout?"
         confirmBtnTxt="Yes"
@@ -116,7 +115,7 @@ export default function () {
           <>
             <Section style={styles.section}>
               <SectionContent>
-                <Toolbar isDarkMode={isDarkmode} />
+                <Toolbar />
                 {contacts && contacts.length > 0 ?
                   <SwipeListView
                     data={contacts}

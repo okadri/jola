@@ -6,7 +6,7 @@ import { selectSearchCriteria } from "../store/contact/selectors";
 import { setSearchCriteria, setShowOptions } from "../store/contact/actions";
 import { Ionicons } from "@expo/vector-icons";
 
-const Toolbar = ({ isDarkMode }: { isDarkMode: boolean | undefined }) => {
+const Toolbar = () => {
     const dispatch = useDispatch();
     const searchCriteria = selectSearchCriteria();
 

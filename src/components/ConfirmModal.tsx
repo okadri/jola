@@ -1,10 +1,9 @@
 import React from "react";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
-import { Text, themeColor } from "react-native-rapi-ui";
+import { Text, themeColor, useTheme } from "react-native-rapi-ui";
 
 const ConfirmModal = (
   {
-    isDarkMode,
     showConfirmation,
     message,
     confirmBtnTxt,
@@ -13,7 +12,6 @@ const ConfirmModal = (
     cancelAction,
   }:
   {
-    isDarkMode: boolean | undefined,
     showConfirmation: boolean | undefined,
     message: string,
     confirmBtnTxt: string,
@@ -21,6 +19,8 @@ const ConfirmModal = (
     confirmColor?: string | undefined,
     cancelAction: (() => void),
   }) => {
+
+    const { isDarkmode } = useTheme();
 
     return (
       <Modal
@@ -30,7 +30,7 @@ const ConfirmModal = (
         onRequestClose={cancelAction}
       >
         <View style={styles.centeredView}>
-          <View style={[styles.modalView, isDarkMode ? styles.darkBg : styles.lightBg]}>
+          <View style={[styles.modalView, isDarkmode ? styles.darkBg : styles.lightBg]}>
             <Text style={styles.modalText}>{message}</Text>
 
             <View style={styles.buttons}>

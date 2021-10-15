@@ -3,12 +3,13 @@ import { Modal, Pressable, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { selectShowOptions, selectSortBy } from "../store/contact/selectors";
 import { setShowOptions, setSortBy, SortByOptions } from "../store/contact/actions";
-import { RadioButton, Text, themeColor } from "react-native-rapi-ui";
+import { RadioButton, Text, themeColor, useTheme } from "react-native-rapi-ui";
 
-const OptionsModal = ({ isDarkMode }: { isDarkMode: boolean | undefined }) => {
+const OptionsModal = () => {
   const dispatch = useDispatch();
   const showOptions = selectShowOptions();
   const sortBy = selectSortBy();
+  const { isDarkmode } = useTheme();
 
   const hideOptions = () => dispatch(setShowOptions(false));
 
@@ -20,7 +21,7 @@ const OptionsModal = ({ isDarkMode }: { isDarkMode: boolean | undefined }) => {
       onRequestClose={hideOptions}
     >
       <View style={styles.centeredView}>
-        <View style={[styles.modalView, isDarkMode ? styles.darkBg : styles.lightBg]}>
+        <View style={[styles.modalView, isDarkmode ? styles.darkBg : styles.lightBg]}>
           <Text style={styles.modalText}>Sorting</Text>
 
           {Object.values(SortByOptions).map(sortOption =>
