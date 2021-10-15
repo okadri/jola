@@ -15,5 +15,5 @@ export interface Contact {
     updated_at?: Date;
     country_of_origin?: Country;
     languages?: Language[];
-    isArchived?: boolean;
+    is_archived?: boolean;
 };

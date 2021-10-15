@@ -21,7 +21,7 @@ const initialState: ContactState = {
 }
 
 const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter: string) => {
-    let newContacts = contacts.filter(c => !c.isArchived);
+    let newContacts = contacts.filter(c => !c.is_archived);
     switch (sortOption) {
         case SortByOptions.SMART:
         case SortByOptions.NAME:
@@ -89,7 +89,7 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
         case ContactActionTypes.ARCHIVE_CONTACT:
             tmp = newState.contacts.find(c => c.id === payload.id);
             if (tmp) {
-                tmp.isArchived = true;
+                tmp.is_archived = true;
                 newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             }
             break;

@@ -15,6 +15,7 @@ export function requestLoadContacts() {
             code
         )
         `)
+        .eq('is_archived', false)
 }
 
 export function requestCreateContact(contact: Contact) {
@@ -24,3 +25,11 @@ export function requestCreateContact(contact: Contact) {
             contact
         ]);
 }
+
+export function requestUpdateContact(contact: Contact) {
+    return supabase
+        .from('contacts')
+        .update({
+            is_archived: contact.is_archived
+        })
+        .eq('id', contact.id)}
