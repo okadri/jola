@@ -1,13 +1,14 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Contact } from "../store/contact/model";
-import { Avatar, themeColor } from 'react-native-rapi-ui';
+import { Avatar, themeColor, useTheme } from 'react-native-rapi-ui';
 import { useDispatch } from "react-redux";
 import { setCurrentContact } from "../store/contact/actions";
 
-const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean | undefined }) => {
+const ContactCard = ({ item }: { item: Contact }) => {
     const navigation = useNavigation();
+    const { isDarkmode } = useTheme();
     const dispatch = useDispatch();
 
     const displayContact = () => {
@@ -15,19 +16,18 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
         navigation.navigate("Contact Screen");
     }
     return (
-        // Consider Pressable
-        <TouchableOpacity style={styles.contactCard} onPress={() => displayContact() }>
+        <Pressable style={[styles.contactCard, isDarkmode ? styles.bgDark : styles.bgLight]} onPress={() => displayContact() }>
                 <Text
-                    style={[styles.name, isDarkMode ? styles.textDark : null]}>
+                    style={[styles.name, isDarkmode ? styles.textDark : null]}>
                         {item.name}
                 </Text>
                 <Text
-                    style={[styles.address, isDarkMode ? styles.textDark : null]}>
+                    style={[styles.address, isDarkmode ? styles.textDark : null]}>
                         {item.street}, {item.city}, {item.state} {item.zipcode}
                 </Text>
                 {item.languages?.length ? 
                     <Text
-                        style={[styles.address, isDarkMode ? styles.textDark : null]}>
+                        style={[styles.address, isDarkmode ? styles.textDark : null]}>
                             Languages: {item.languages.map(l => l.name).join(', ')}
                     </Text>
                 : null}
@@ -39,7 +39,7 @@ const ContactCard = ({ item, isDarkMode }: { item: Contact, isDarkMode: boolean 
                         shape="rounded"
                     />
                 : null}
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomWidth: 1,
         padding: 10,
-        marginBottom: 10,
+        marginBottom: 5,
     },
     name: {
         fontSize: 20,
@@ -61,6 +61,12 @@ const styles = StyleSheet.create({
     },
     textDark: {
         color: themeColor.white100,
+    },
+    bgDark: {
+        backgroundColor: themeColor.dark100,
+    },
+    bgLight: {
+        backgroundColor: themeColor.white100,
     },
     flag : {
         right: 10,

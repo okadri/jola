@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator, Text } from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text, ListRenderItemInfo } from "react-native";
 import { supabase } from "../initSupabase";
 import {
   Layout,
@@ -12,6 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { FloatingAction } from "react-native-floating-action";
 import ContactCard from "../components/ContactCard";
+import ContactCardActions from "../components/ContactCardActions";
 import { Contact } from "../store/contact/model";
 
 import { useDispatch } from "react-redux";
@@ -23,6 +24,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import { confirmLogout } from "../store/shared/actions";
 import { selectConfirmLogout } from "../store/shared/selectors";
 import { useNavigation } from "@react-navigation/core";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 export default function () {
   const navigation = useNavigation();
@@ -33,8 +35,6 @@ export default function () {
   const dispatch = useDispatch();
   const logout = () => dispatch(confirmLogout(true));
   const hideLogout = () => dispatch(confirmLogout(false));
-
-  const renderItem = ({ item }: { item: Contact }) => <ContactCard item={item} isDarkMode={isDarkmode} />
 
   const runAction = (action: string | undefined) => {
     switch (action) {
@@ -118,11 +118,14 @@ export default function () {
               <SectionContent>
                 <Toolbar isDarkMode={isDarkmode} />
                 {contacts && contacts.length > 0 ?
-                  <FlatList
+                  <SwipeListView
                     data={contacts}
-                    renderItem={renderItem}
+                    renderItem={(rowData: ListRenderItemInfo<Contact>) => <ContactCard item={rowData.item} />}
+                    renderHiddenItem={(rowData: ListRenderItemInfo<Contact>) => <ContactCardActions item={rowData.item} />}
                     keyExtractor={item => item.id? item.id.toString() : item.name}
                     scrollEnabled={true}
+                    disableRightSwipe
+                    rightOpenValue={-70}
                   /> :
                   <Text
                     style={[styles.noResults, isDarkmode ? styles.textDark : null]}>

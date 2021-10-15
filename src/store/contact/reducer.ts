@@ -1,4 +1,4 @@
-import { ContactActionTypes, SortByOptions } from "./actions";
+import { addContact, ContactActionTypes, SortByOptions } from "./actions";
 import { Contact } from "./model";
 
 export interface ContactState {
@@ -21,22 +21,20 @@ const initialState: ContactState = {
 }
 
 const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter: string) => {
-    let newContacts = [];
+    let newContacts = contacts.filter(c => !c.isArchived);
     switch (sortOption) {
         case SortByOptions.SMART:
         case SortByOptions.NAME:
-            newContacts = contacts.sort((a: Contact, b: Contact) =>
+            newContacts.sort((a: Contact, b: Contact) =>
                 a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0
             );
             break;
         case SortByOptions.LAST_VISIT:
         case SortByOptions.DISTANCE:
-            newContacts = contacts.sort((a: Contact, b: Contact) =>
+            newContacts.sort((a: Contact, b: Contact) =>
                 a.street.toLowerCase() > b.street.toLowerCase() ? 1 : a.street.toLowerCase() < b.street.toLowerCase() ? -1 : 0
             );
             break;
-        default:
-            newContacts = contacts;
     };
     return filter ? newContacts.filter(contact =>
         JSON.stringify(contact).toLowerCase().indexOf(filter.toLowerCase()) > -1
@@ -46,6 +44,7 @@ const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter:
 export const contactReducer = (state: ContactState = initialState, action: any) => {
     const { type, payload } = action;
     let newState = { ...state };
+    let tmp;
 
     switch (type) {
         case ContactActionTypes.SET_CONTACTS:
@@ -80,11 +79,19 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             break;
 
         case ContactActionTypes.ADD_CONTACT:
-            const newContact = payload[0];
-            newState.currentContact = newContact;
-            newState.contacts.push(newContact);
+            tmp = payload[0];
+            newState.currentContact = tmp;
+            newState.contacts.push(tmp);
             newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             newState.loading = false;
+            break;
+
+        case ContactActionTypes.ARCHIVE_CONTACT:
+            tmp = newState.contacts.find(c => c.id === payload.id);
+            if (tmp) {
+                tmp.isArchived = true;
+                newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
+            }
             break;
     };
     return newState;

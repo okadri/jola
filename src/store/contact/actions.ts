@@ -9,6 +9,7 @@ export enum ContactActionTypes {
     SET_SORT_BY = 'contact/SET_SORT_BY',
     ADD_CONTACT = 'contact/ADD_CONTACT',
     CREATE_CONTACT = 'contact/CREATE_CONTACT',
+    ARCHIVE_CONTACT = 'contact/ARCHIVE_CONTACT',
 }
 
 export enum SortByOptions {
@@ -55,5 +56,10 @@ export const createContact = (contact: Contact) => ({
 
 export const addContact = (contact: Contact) => ({
     type: ContactActionTypes.ADD_CONTACT,
+    payload: contact,
+});
+
+export const archiveContact = (contact: Contact) => ({
+    type: ContactActionTypes.ARCHIVE_CONTACT,
     payload: contact,
 });
