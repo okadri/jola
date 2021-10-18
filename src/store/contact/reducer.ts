@@ -9,6 +9,7 @@ export interface ContactState {
     displayContacts: Contact[];
     showOptions: boolean;
     sortBy: SortByOptions;
+    expandedSections: number[];
 }
 
 const initialState: ContactState = {
@@ -18,6 +19,7 @@ const initialState: ContactState = {
     showOptions: false,
     sortBy: SortByOptions.SMART,
     searchCriteria: "",
+    expandedSections: [],
 }
 
 const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter: string) => {
@@ -92,6 +94,10 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
                 tmp.is_archived = true;
                 newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             }
+            break;
+
+        case ContactActionTypes.UPDATE_EXPANDED_SECTIONS:
+            newState.expandedSections = payload;
             break;
     };
     return newState;

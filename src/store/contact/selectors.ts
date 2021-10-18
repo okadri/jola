@@ -23,3 +23,6 @@ export const selectShowOptions = (): boolean =>
 
 export const selectSortBy = (): SortByOptions =>
     useSelector((state: RootState) => state.contact.sortBy);
+
+export const selectExpandedSections = (): number[] =>
+    useSelector((state: RootState) => state.contact.expandedSections);
