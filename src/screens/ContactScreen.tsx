@@ -8,15 +8,16 @@ import {
   themeColor,
   useTheme,
 } from "react-native-rapi-ui";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Accordion from 'react-native-collapsible/Accordion';
 
 import {
   selectCurrentContact,
   selectLoadingContacts,
-  selectExpandedSections
+  selectExpandedSections,
+  selectSmsTemplate
 } from "../store/contact/selectors";
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet, ActivityIndicator, View, Platform, Linking } from "react-native";
 import { useDispatch } from "react-redux";
 import { updateEpandedSections } from "../store/contact/actions";
 import ContactSectionHeader from "../components/ContactSectionHeader";
@@ -29,6 +30,7 @@ export default function ({
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
   const expandedSections = selectExpandedSections();
+  const smsTemplate = selectSmsTemplate();
   const dispatch = useDispatch();
 
   const SECTIONS = [
@@ -52,13 +54,22 @@ export default function ({
 
   const renderSectionHeader = (
     { title, icon }:
-    { title: string, icon: string }
+      { title: string, icon: string }
   ) => <ContactSectionHeader title={title} icon={icon} />
 
   const renderSectionContent = (
     { title }:
-    { title: string }
+      { title: string }
   ) => <ContactSectionContent title={title} contact={contact} />
+
+  const openSmsUrl = (phone: string | undefined) => {
+    const separator = Platform.OS === "ios" ? "&" : "?";
+    Linking.openURL(`sms:${phone}${separator}body=${smsTemplate}`);
+  }
+
+  const openWhatsappUrl = (phone: string | undefined) => {
+    Linking.openURL(`https://api.whatsapp.com/send?phone=${phone}`)
+  }
 
   return (
     <Layout>
@@ -99,7 +110,7 @@ export default function ({
           <Text
             numberOfLines={1}
             adjustsFontSizeToFit
-            style={styles.address}>
+            style={styles.meta}>
             {contact?.street}, {contact?.city}, {contact?.state} {contact?.zipcode}
           </Text>
           <Text
@@ -108,6 +119,50 @@ export default function ({
             style={styles.meta}>
             {contact?.phone} {contact?.phone && contact?.email ? '|' : null} {contact?.email}
           </Text>
+          <View style={styles.buttons}>
+            {contact?.phone ?
+              <>
+                <MaterialIcons
+                  name="phone"
+                  size={20}
+                  color={isDarkmode
+                    ? themeColor.white
+                    : themeColor.dark100}
+                  style={styles.button}
+                  onPress={() => Linking.openURL(`tel:${contact.phone}`)}
+                />
+                <MaterialIcons
+                  name="message"
+                  size={20}
+                  color={isDarkmode
+                    ? themeColor.white
+                    : themeColor.dark100}
+                  style={styles.button}
+                  onPress={() => openSmsUrl(contact.phone)}
+                />
+                <FontAwesome5
+                  name="whatsapp"
+                  size={20}
+                  color={isDarkmode
+                    ? themeColor.white
+                    : themeColor.dark100}
+                  style={styles.button}
+                  onPress={() => openWhatsappUrl(contact.phone)}
+                />
+              </>
+              : null}
+            {contact?.email ?
+              <Entypo
+                name="email"
+                size={20}
+                color={isDarkmode
+                  ? themeColor.white
+                  : themeColor.dark100}
+                style={styles.button}
+                onPress={() => Linking.openURL(`mailto:${contact.email}`)}
+              />
+              : null}
+          </View>
           <Accordion
             activeSections={expandedSections}
             sections={SECTIONS}
@@ -130,16 +185,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 40,
   },
-  address: {
-    textAlign: 'center',
-    margin: 5,
-    fontSize: 20,
-    color: themeColor.gray300,
-  },
   meta: {
     textAlign: 'center',
-    margin: 5,
+    marginLeft: 15,
+    marginRight: 15,
     fontSize: 15,
     color: themeColor.gray300,
+  },
+  buttons: {
+    flexDirection: 'row',
+    alignContent: 'center',
+  },
+  button: {
+    flex: 1,
+    textAlign: 'center',
+    padding: 15,
+    margin: 15,
   },
 });

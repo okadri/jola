@@ -26,3 +26,6 @@ export const selectSortBy = (): SortByOptions =>
 
 export const selectExpandedSections = (): number[] =>
     useSelector((state: RootState) => state.contact.expandedSections);
+
+export const selectSmsTemplate = (): string =>
+    useSelector((state: RootState) => state.contact.smsTemplate);

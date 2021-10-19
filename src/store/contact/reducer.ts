@@ -10,6 +10,7 @@ export interface ContactState {
     showOptions: boolean;
     sortBy: SortByOptions;
     expandedSections: number[];
+    smsTemplate: string;
 }
 
 const initialState: ContactState = {
@@ -20,6 +21,7 @@ const initialState: ContactState = {
     sortBy: SortByOptions.SMART,
     searchCriteria: "",
     expandedSections: [],
+    smsTemplate: "Salam.. Came by to visit and missed you. We hope to see you in the Masjid!"
 }
 
 const sortAndFilterBy = (contacts: Contact[], sortOption: SortByOptions, filter: string) => {
