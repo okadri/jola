@@ -9,6 +9,7 @@ import {
 } from "react-native-rapi-ui";
 import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import MapView from 'react-native-maps';
 
 import {
   selectCurrentContact,
@@ -54,13 +55,23 @@ export default function ({
       />
       {loadingContact ?
         <ActivityIndicator size="large" /> :
-
-        <BottomSheet snapPoints={snapPoints}
-          backgroundStyle={{backgroundColor: isDarkmode ? themeColor.dark100 : themeColor.white}}>
-          <BottomSheetScrollView>
-            <ContactSheet contact={contact} />
-          </BottomSheetScrollView>
-        </BottomSheet>
+        <>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 38.540980,
+              longitude: -121.562210,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.03,
+            }}
+          />
+          <BottomSheet snapPoints={snapPoints}
+            backgroundStyle={{ backgroundColor: isDarkmode ? themeColor.dark100 : themeColor.white }}>
+            <BottomSheetScrollView>
+              <ContactSheet contact={contact} />
+            </BottomSheetScrollView>
+          </BottomSheet>
+        </>
       }
 
     </Layout>
@@ -68,4 +79,7 @@ export default function ({
 }
 
 const styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  }
 });
