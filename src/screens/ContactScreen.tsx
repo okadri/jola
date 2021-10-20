@@ -23,7 +23,7 @@ export default function ({
   const { isDarkmode, setTheme } = useTheme();
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
-  const snapPoints = useMemo(() => ['30%', '50%'], []);
+  const snapPoints = useMemo(() => ['30%', '70%'], []);
 
   return (
     <Layout>
@@ -55,7 +55,8 @@ export default function ({
       {loadingContact ?
         <ActivityIndicator size="large" /> :
 
-        <BottomSheet snapPoints={snapPoints}>
+        <BottomSheet snapPoints={snapPoints}
+          backgroundStyle={{backgroundColor: isDarkmode ? themeColor.dark100 : themeColor.white}}>
           <BottomSheetScrollView>
             <ContactSheet contact={contact} />
           </BottomSheetScrollView>

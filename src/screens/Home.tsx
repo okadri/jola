@@ -113,8 +113,6 @@ export default function () {
         {loadingContacts ?
           <ActivityIndicator size="large" /> :
           <>
-            <Section style={styles.section}>
-              <SectionContent>
                 <Toolbar />
                 {contacts && contacts.length > 0 ?
                   <SwipeListView
@@ -125,14 +123,13 @@ export default function () {
                     scrollEnabled={true}
                     disableRightSwipe
                     rightOpenValue={-70}
+                    style={styles.contactList}
                   /> :
                   <Text
                     style={[styles.noResults, isDarkmode ? styles.textDark : null]}>
                     No Results!
                   </Text>
                 }
-              </SectionContent>
-            </Section>
           </>
         }
       </View>
@@ -152,23 +149,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  section: {
-    marginTop: 10,
-    paddingBottom: 30,
-    flex: 1,
-    width: '95%'
-  },
-  contactCard: {
-    borderColor: '#4169e1',
-    borderRadius: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 5,
-  },
-  contactName: {
-    fontSize: 20,
-    textAlign: 'center',
+  contactList: {
+    width: '100%',
   },
   textDark: {
     color: themeColor.white100,

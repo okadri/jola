@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "row",
-        marginBottom: 10,
-        
+        marginVertical: 10,
+        marginHorizontal: 5,
     },
     searchInput: {
         flex: 9,

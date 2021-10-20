@@ -1,11 +1,11 @@
 import React from "react";
-import { Text, StyleSheet, View, Linking, Platform } from "react-native";
+import { StyleSheet, View, Linking, Platform } from "react-native";
 import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import Accordion from 'react-native-collapsible/Accordion';
 
 
 import { Contact } from "../store/contact/model";
-import { themeColor, useTheme } from 'react-native-rapi-ui';
+import { Text, themeColor, useTheme } from 'react-native-rapi-ui';
 import { useDispatch } from "react-redux";
 import { updateEpandedSections } from "../store/contact/actions";
 import ContactSectionHeader from "../components/ContactSectionHeader";
