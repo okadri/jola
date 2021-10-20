@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { MainStackParamList } from "../types/navigation";
 import { StackScreenProps } from "@react-navigation/stack";
 import {
@@ -10,6 +10,7 @@ import {
 } from "react-native-rapi-ui";
 import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Accordion from 'react-native-collapsible/Accordion';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import {
   selectCurrentContact,
@@ -32,6 +33,7 @@ export default function ({
   const expandedSections = selectExpandedSections();
   const smsTemplate = selectSmsTemplate();
   const dispatch = useDispatch();
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   const SECTIONS = [
     {
@@ -171,6 +173,11 @@ export default function ({
             onChange={(sections) => dispatch(updateEpandedSections(sections))}
             underlayColor={themeColor.primaryTransparent200}
           />
+          <BottomSheet snapPoints={snapPoints}>
+            <View>
+              <Text>This is a sheet</Text>
+            </View>
+          </BottomSheet>
         </>
       }
 
