@@ -60,7 +60,7 @@ export const addContact = (contact: Contact) => ({
     payload: contact,
 });
 
-export const archiveContact = (contact: Contact) => ({
+export const archiveContact = (contact: Contact | undefined) => ({
     type: ContactActionTypes.ARCHIVE_CONTACT,
     payload: contact,
 });

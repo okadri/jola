@@ -19,6 +19,8 @@ import { StyleSheet, ActivityIndicator } from "react-native";
 import ContactSheet from "../components/ContactSheet";
 import { darkMap } from "../constants/mapStyles";
 import { FloatingAction } from "react-native-floating-action";
+import { useDispatch } from "react-redux";
+import { archiveContact } from "../store/contact/actions";
 
 export default function ({
   navigation,
@@ -27,6 +29,7 @@ export default function ({
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
   const snapPoints = useMemo(() => ['30%', '70%'], []);
+  const dispatch = useDispatch();
 
   const mapDarkStyle = isDarkmode ? darkMap : [];
 
@@ -53,6 +56,18 @@ export default function ({
       position: 3,
     },
   ];
+
+  const runAction = (action: string | undefined) => {
+    switch (action) {
+      case "archive":
+        dispatch(archiveContact(contact));
+        navigation.navigate("MainTabs");
+        break;
+
+      default:
+        break;
+    }
+  }
 
   return (
     <Layout>
@@ -100,7 +115,7 @@ export default function ({
             color={themeColor.primary}
             distanceToEdge={{ vertical: 320, horizontal: 30 }}
             onPressItem={name => {
-              console.log(name);
+              runAction(name);
             }} />
           <BottomSheet snapPoints={snapPoints}
             backgroundStyle={{ backgroundColor: isDarkmode ? themeColor.dark100 : themeColor.white }}>
@@ -111,7 +126,7 @@ export default function ({
               actions={actions}
               color={themeColor.primary}
               onPressItem={name => {
-                console.log(name);
+                runAction(name);
               }} />
           </BottomSheet>
         </>

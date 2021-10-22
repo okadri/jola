@@ -9,13 +9,10 @@ const ContactCardActions = ({ item }: { item: Contact }) => {
     const { isDarkmode } = useTheme();
     const dispatch = useDispatch();
 
-    const deleteContact = () => {
-        dispatch(archiveContact(item));
-    }
     return (
         <Pressable
             style={[styles.actionCard, isDarkmode ? styles.bgDark : styles.bgLight]}
-            onPress={() => deleteContact() }>
+            onPress={() => dispatch(archiveContact(item))}>
                 <Text style={[styles.btnText, isDarkmode ? styles.textDark : null]}>
                         Archive
                 </Text>
