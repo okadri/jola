@@ -12,6 +12,7 @@ import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import {
+  selectConfirmArchive,
   selectCurrentContact,
   selectLoadingContacts,
 } from "../store/contact/selectors";
@@ -20,7 +21,8 @@ import ContactSheet from "../components/ContactSheet";
 import { darkMap } from "../constants/mapStyles";
 import { FloatingAction } from "react-native-floating-action";
 import { useDispatch } from "react-redux";
-import { archiveContact } from "../store/contact/actions";
+import { archiveContact, confirmArchive } from "../store/contact/actions";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function ({
   navigation,
@@ -28,8 +30,12 @@ export default function ({
   const { isDarkmode, setTheme } = useTheme();
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
+  const showArchiveConfirm = selectConfirmArchive();
   const snapPoints = useMemo(() => ['30%', '70%'], []);
   const dispatch = useDispatch();
+
+  const archive = () => dispatch(confirmArchive(true));
+  const hideArchiveConfirm = () => dispatch(confirmArchive(false));
 
   const mapDarkStyle = isDarkmode ? darkMap : [];
 
@@ -57,11 +63,15 @@ export default function ({
     },
   ];
 
+  const doArchiveContact = () => {
+    dispatch(archiveContact(contact));
+    navigation.navigate("MainTabs");
+  };
+  
   const runAction = (action: string | undefined) => {
     switch (action) {
       case "archive":
-        dispatch(archiveContact(contact));
-        navigation.navigate("MainTabs");
+        archive();
         break;
 
       default:
@@ -99,6 +109,13 @@ export default function ({
       {loadingContact ?
         <ActivityIndicator size="large" /> :
         <>
+          <ConfirmModal
+            showConfirmation={showArchiveConfirm}
+            message="Are you sure you want to logout?"
+            confirmBtnTxt="Yes"
+            confirmAction={doArchiveContact}
+            cancelAction={hideArchiveConfirm}
+          />
           <MapView
             style={styles.map}
             initialRegion={{

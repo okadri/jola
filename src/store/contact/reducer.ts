@@ -8,6 +8,7 @@ export interface ContactState {
     searchCriteria: string;
     displayContacts: Contact[];
     showOptions: boolean;
+    confirmArchive: boolean;
     sortBy: SortByOptions;
     expandedSections: number[];
     smsTemplate: string;
@@ -18,6 +19,7 @@ const initialState: ContactState = {
     displayContacts: [],
     loading: true,
     showOptions: false,
+    confirmArchive: false,
     sortBy: SortByOptions.SMART,
     searchCriteria: "",
     expandedSections: [],
@@ -88,6 +90,10 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             newState.contacts.push(tmp);
             newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             newState.loading = false;
+            break;
+
+        case ContactActionTypes.CONFIRM_ARCHIVE:
+            newState.confirmArchive = payload;
             break;
 
         case ContactActionTypes.ARCHIVE_CONTACT:

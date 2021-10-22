@@ -29,3 +29,6 @@ export const selectExpandedSections = (): number[] =>
 
 export const selectSmsTemplate = (): string =>
     useSelector((state: RootState) => state.contact.smsTemplate);
+
+export const selectConfirmArchive = (): boolean | undefined =>
+    useSelector((state: RootState) => state.contact.confirmArchive);
