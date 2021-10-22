@@ -98,7 +98,7 @@ export default function ({
           <FloatingAction
             actions={actions}
             color={themeColor.primary}
-            distanceToEdge={{vertical: 320, horizontal: 30}}
+            distanceToEdge={{ vertical: 320, horizontal: 30 }}
             onPressItem={name => {
               console.log(name);
             }} />
@@ -107,6 +107,12 @@ export default function ({
             <BottomSheetScrollView>
               <ContactSheet contact={contact} />
             </BottomSheetScrollView>
+            <FloatingAction
+              actions={actions}
+              color={themeColor.primary}
+              onPressItem={name => {
+                console.log(name);
+              }} />
           </BottomSheet>
         </>
       }
