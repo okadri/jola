@@ -122,7 +122,7 @@ export default function () {
                     keyExtractor={item => item.id? item.id.toString() : item.name}
                     scrollEnabled={true}
                     disableRightSwipe
-                    rightOpenValue={-70}
+                    rightOpenValue={-80}
                     style={styles.contactList}
                   /> :
                   <Text

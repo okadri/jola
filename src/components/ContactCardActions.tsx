@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import { Contact } from "../store/contact/model";
-import { themeColor, useTheme } from 'react-native-rapi-ui';
+import { Text, themeColor, useTheme } from 'react-native-rapi-ui';
 import { useDispatch } from "react-redux";
 import { archiveContact } from "../store/contact/actions";
 
@@ -13,7 +13,7 @@ const ContactCardActions = ({ item }: { item: Contact }) => {
         <Pressable
             style={[styles.actionCard, isDarkmode ? styles.bgDark : styles.bgLight]}
             onPress={() => dispatch(archiveContact(item))}>
-                <Text style={[styles.btnText, isDarkmode ? styles.textDark : null]}>
+                <Text style={styles.btnText}>
                         Archive
                 </Text>
         </Pressable>
@@ -22,13 +22,12 @@ const ContactCardActions = ({ item }: { item: Contact }) => {
 
 const styles = StyleSheet.create({
     actionCard: {
-        flex: 1,
-        marginBottom: 5,
         borderColor: '#cecece',
         borderStyle: 'solid',
         borderBottomWidth: 1,
         alignItems: "flex-end",
         justifyContent: "center",
+        height: 75,
     },
     btnText: {
         padding: 10,
