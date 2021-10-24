@@ -1,6 +1,7 @@
 export type MainStackParamList = {
 	MainTabs: undefined;
 	ContactScreen: undefined;
+	ContactForm: undefined;
 };
 
 export type AuthStackParamList = {

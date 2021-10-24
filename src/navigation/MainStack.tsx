@@ -14,8 +14,8 @@ const Main = () => {
 			}}
 		>
 			<MainStack.Screen name="MainTabs" component={MainTabs} />
-			<MainStack.Screen name="Contact Screen" component={ContactScreen} />
-			<MainStack.Screen name="Contact Form" component={ContactForm} />
+			<MainStack.Screen name="ContactScreen" component={ContactScreen} />
+			<MainStack.Screen name="ContactForm" component={ContactForm} />
 		</MainStack.Navigator>
 	);
 };

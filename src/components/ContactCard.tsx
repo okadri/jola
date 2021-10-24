@@ -13,7 +13,7 @@ const ContactCard = ({ item }: { item: Contact }) => {
 
     const displayContact = () => {
         dispatch(setCurrentContact(item));
-        navigation.navigate("Contact Screen");
+        navigation.navigate("ContactScreen");
     }
     return (
         <Pressable style={[styles.contactCard, isDarkmode ? styles.bgDark : styles.bgLight]} onPress={() => displayContact()}>

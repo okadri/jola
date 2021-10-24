@@ -10,14 +10,22 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import { selectCurrentContact } from "../store/contact/selectors";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import ContactForm from "../components/ContactForm";
+import { useDispatch } from "react-redux";
+import { createContact } from "../store/contact/actions";
 
 export default function ({
   navigation,
 }: StackScreenProps<MainStackParamList, "ContactScreen">) {
   const { isDarkmode, setTheme } = useTheme();
-  let contact = selectCurrentContact();
+  const contact = selectCurrentContact();
+  const dispatch = useDispatch()
+
+  const onSubmit = (values: any) => {
+    dispatch(createContact(values));
+    navigation.replace("ContactScreen");
+  }
 
   return (
     <Layout>
@@ -46,7 +54,10 @@ export default function ({
           }
         }}
       />
-      <ContactForm onSubmit={() => navigation.replace("Contact Screen")} />
+      <ContactForm
+        onSubmit={onSubmit}
+        contact={contact}
+        />
 
     </Layout>
   );

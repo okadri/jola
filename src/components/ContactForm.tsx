@@ -1,102 +1,109 @@
 import React from "react";
-import { KeyboardAvoidingView, KeyboardTypeOptions, Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
-import { useDispatch } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { createContact } from "../store/contact/actions";
+import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
+import { Button, Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
+import { Formik } from "formik";
 import { Contact } from "../store/contact/model";
+import * as yup from "yup";
 
-const validate = (values: any) => {
-    const errors: any = {};
-    if (!values.name) {
-        errors.name = "Name is required";
-    }
-    if (!values.email) {
-        errors.email = "Email is required";
-    }
-    // if (!/^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+{2,4}$/i.test(values.email)) {
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Email is invalid";
-    }
-    if (values.phone && !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(values.phone)) {
-        errors.phone = "Phone is invalid";
-    }
-    if (!/^\w+(\s\w+){2,}/i.test(values.street)) {
-        errors.street = "A valid street address is required";
-    }
-    if (!values.city) {
-        errors.city = "City is required";
-    }
-    if (!values.state) {
-        errors.state = "State is required";
-    }
-    if (!/^\d{5}(?:[-\s]\d{4})?$/.test(values.zipcode)) {
-        errors.zipcode = "A valid zipcode is required";
-    }
-    return errors;
-}
+//  !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const streetRegExp = /^\w+(\s\w+){2,}/i;
+const zipcodeRegExp = /^\d{5}$/;
 
-const RenderField = (
-    {
-        label,
-        keyboardType,
-        meta,
-        input,
-    }: {
-        label: string,
-        keyboardType: KeyboardTypeOptions | undefined,
-        meta: any,
-        input: any,
-    }) => {
-    return (
-        <View>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput keyboardType={keyboardType} onChangeText={input.onChange} {...input.restInput} />
-            {meta.touched && (meta.error && <Text style={{ color: themeColor.danger }}>{meta.error}</Text>)}
-        </View>
-    );
-}
+const validationSchema = yup.object({
+    name: yup.string().required().min(4),
+    email: yup.string().email().nullable(),
+    phone: yup.string().matches(phoneRegExp, 'Phone number is not valid').nullable(),
+    street: yup.string().required().matches(streetRegExp, 'A valid street address is required'),
+    city: yup.string().required().min(4),
+    state: yup.string().required().min(2).max(2),
+    zipcode: yup.string().matches(zipcodeRegExp, 'Invalid ZipCode'),
+});
 
-
-const TheForm = (props: any) => {
-    
-    const { onSubmit, handleSubmit } = props;
-    const dispatch = useDispatch();
-    
-    const submit = (contact: Contact) => {
-        dispatch(createContact(contact))
-        onSubmit(contact);
-    }
-
+const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSubmit: any }) => {
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <ScrollView>
-                <Section style={styles.section}>
-                    <Field component={RenderField} label="Full Name: " keyboardType="default" name="name" />
-                    <Field component={RenderField} label="Email: " keyboardType="email-address" name="email" />
-                    <Field component={RenderField} label="Phone: " keyboardType="numeric" name="phone" />
-                    <Field component={RenderField} label="Street Address: " keyboardType="default" name="street" />
-                    <Field component={RenderField} label="City: " keyboardType="default" name="city" />
-                    <Field component={RenderField} label="State: " keyboardType="default" name="state" />
-                    <Field component={RenderField} label="Zipcode: " keyboardType="numeric" name="zipcode" />
-                    <Pressable
-                        style={styles.button}
-                        onPress={handleSubmit(submit)}
-                    >
-                        <Text style={styles.buttonText}>Create</Text>
-                    </Pressable>
-                </Section>
+                <Formik
+                    initialValues={{
+                        name: contact?.name,
+                        email: contact?.email,
+                        phone: contact?.phone,
+                        street: contact?.street,
+                        city: contact?.city,
+                        state: contact?.state,
+                        zipcode: contact?.zipcode,
+
+                    }}
+                    validationSchema={validationSchema}
+                    onSubmit={values => onSubmit(values)}
+                >
+                    {props => (
+                        <Section style={styles.section}>
+                            <Text style={styles.label}>Full Name</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('name')}
+                                value={props.values.name}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.name && props.errors.name}
+                            </Text>
+                            <Text style={styles.label}>Email</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('email')}
+                                value={props.values.email}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.email && props.errors.email}
+                            </Text>
+                            <Text style={styles.label}>Phone</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('phone')}
+                                value={props.values.phone}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.phone && props.errors.phone}
+                            </Text>
+                            <Text style={styles.label}>Street Address</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('street')}
+                                value={props.values.street}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.street && props.errors.street}
+                            </Text>
+                            <Text style={styles.label}>City</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('city')}
+                                value={props.values.city}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.city && props.errors.city}
+                            </Text>
+                            <Text style={styles.label}>State</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('state')}
+                                value={props.values.state}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.state && props.errors.state}
+                            </Text>
+                            <Text style={styles.label}>Zipcode</Text>
+                            <TextInput
+                                onChangeText={props.handleChange('zipcode')}
+                                value={props.values.zipcode}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.zipcode && props.errors.zipcode}
+                            </Text>
+                            <Button style={styles.button} onPress={() => props.handleSubmit()} text="Submit" />
+                        </Section>
+                    )}
+                </Formik>
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
-
-const ContactForm = reduxForm({
-    form: 'contact',
-    touchOnChange: false,
-    touchOnBlur: true,
-    validate,
-})(TheForm);
+}
 
 const styles = StyleSheet.create({
     container: {

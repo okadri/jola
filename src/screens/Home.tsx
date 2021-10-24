@@ -40,7 +40,7 @@ export default function () {
     switch (action) {
       case "create":
         dispatch(setCurrentContact());
-        navigation.navigate("Contact Form");
+        navigation.navigate("ContactForm");
         break;
 
       default:

@@ -74,6 +74,10 @@ export default function ({
         archive();
         break;
 
+      case "edit":
+        navigation.navigate("ContactForm");
+        break;
+
       default:
         break;
     }
