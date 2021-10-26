@@ -5,11 +5,15 @@ import { Contact } from "../store/contact/model";
 import { Text, Avatar, themeColor, useTheme } from 'react-native-rapi-ui';
 import { useDispatch } from "react-redux";
 import { setCurrentContact } from "../store/contact/actions";
+import FLAGS from "../constants/flags";
 
 const ContactCard = ({ item }: { item: Contact }) => {
     const navigation = useNavigation();
     const { isDarkmode } = useTheme();
     const dispatch = useDispatch();
+
+    const flag = item.country_of_origin && item.country_of_origin.code.toLocaleUpperCase() in FLAGS ?
+    FLAGS[item.country_of_origin.code.toLocaleUpperCase()] : null;
 
     const displayContact = () => {
         dispatch(setCurrentContact(item));
@@ -28,10 +32,10 @@ const ContactCard = ({ item }: { item: Contact }) => {
                     Languages: {item.languages.map(l => l.name).join(', ')}
                 </Text>
                 : null}
-            {item.country_of_origin ?
+            {flag ?
                 <Avatar
                     style={styles.flag}
-                    source={{ uri: `https://www.countryflags.io/${item.country_of_origin.code.toLowerCase()}/shiny/64.png` }}
+                    source={flag}
                     size="md"
                     shape="rounded"
                 />

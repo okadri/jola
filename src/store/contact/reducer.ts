@@ -108,6 +108,6 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             newState.expandedSections = payload;
             break;
     };
-    console.log(type, newState.contacts.map(c => {return {name: c.name, country: c.country_of_origin}}).filter(c => c.country))
+
     return newState;
 };
