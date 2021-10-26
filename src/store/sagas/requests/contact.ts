@@ -26,10 +26,10 @@ export function requestCreateContact(contact: Contact) {
         ]);
 }
 
-export function requestUpdateContact(contact: Contact) {
+export function requestArchiveContact(contact: Contact) {
     return supabase
         .from('contacts')
         .update({
-            is_archived: contact.is_archived
+            is_archived: true
         })
         .eq('id', contact.id)}

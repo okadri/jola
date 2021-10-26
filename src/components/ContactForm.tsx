@@ -1,9 +1,10 @@
 import React from "react";
 import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
-import { Button, Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
+import { Button, Picker, Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
 import { Formik } from "formik";
 import { Contact } from "../store/contact/model";
 import * as yup from "yup";
+import { selectCountries, selectLanguages } from "../store/shared/selectors";
 
 //  !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -21,6 +22,9 @@ const validationSchema = yup.object({
 });
 
 const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSubmit: any }) => {
+    const countries = selectCountries();
+    const languages = selectLanguages();
+
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <ScrollView>
@@ -33,7 +37,7 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                         city: contact?.city,
                         state: contact?.state,
                         zipcode: contact?.zipcode,
-
+                        country_of_origin: contact?.country_of_origin,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={values => onSubmit(values)}
@@ -95,6 +99,14 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.zipcode && props.errors.zipcode}
+                            </Text>
+                            <Text style={styles.label}>Country of Origin</Text>
+                            <Picker
+                                items={countries.map(c => {return {label: c.name, value: c.code}})}
+                                placeholder="Choose Country"
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.country_of_origin && props.errors.country_of_origin}
                             </Text>
                             <Button style={styles.button} onPress={() => props.handleSubmit()} text="Submit" />
                         </Section>

@@ -10,6 +10,7 @@ export enum ContactActionTypes {
     ADD_CONTACT = 'contact/ADD_CONTACT',
     CREATE_CONTACT = 'contact/CREATE_CONTACT',
     ARCHIVE_CONTACT = 'contact/ARCHIVE_CONTACT',
+    SET_ARCHIVE_CONTACT = 'contact/SET_ARCHIVE_CONTACT',
     CONFIRM_ARCHIVE = 'contact/CONFIRM_ARCHIVE',
     UPDATE_EXPANDED_SECTIONS = 'contact/UPDATE_EXPANDED_SECTIONS',
 }
@@ -63,6 +64,11 @@ export const addContact = (contact: Contact) => ({
 
 export const archiveContact = (contact: Contact | undefined) => ({
     type: ContactActionTypes.ARCHIVE_CONTACT,
+    payload: contact,
+});
+
+export const setArchiveContact = (contact: Contact) => ({
+    type: ContactActionTypes.SET_ARCHIVE_CONTACT,
     payload: contact,
 });
 

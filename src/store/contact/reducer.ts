@@ -96,7 +96,7 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             newState.confirmArchive = payload;
             break;
 
-        case ContactActionTypes.ARCHIVE_CONTACT:
+        case ContactActionTypes.SET_ARCHIVE_CONTACT:
             tmp = newState.contacts.find(c => c.id === payload.id);
             if (tmp) {
                 tmp.is_archived = true;
@@ -108,5 +108,6 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             newState.expandedSections = payload;
             break;
     };
+    console.log(type, newState.contacts.map(c => {return {name: c.name, country: c.country_of_origin}}).filter(c => c.country))
     return newState;
 };

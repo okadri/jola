@@ -4,8 +4,6 @@ import { supabase } from "../initSupabase";
 import {
   Layout,
   TopNav,
-  Section,
-  SectionContent,
   useTheme,
   themeColor,
 } from "react-native-rapi-ui";
@@ -17,6 +15,7 @@ import { Contact } from "../store/contact/model";
 
 import { useDispatch } from "react-redux";
 import { loadContacts, setCurrentContact } from "../store/contact/actions";
+import { loadValues } from "../store/shared/actions";
 import { selectDisplayContacts, selectLoadingContacts } from "../store/contact/selectors";
 import Toolbar from "../components/Toolbar";
 import OptionsModal from "../components/OptionsModal";
@@ -78,6 +77,7 @@ export default function () {
 
   useEffect(() => {
     dispatch(loadContacts());
+    dispatch(loadValues());
   }, [dispatch]);
 
   return (
