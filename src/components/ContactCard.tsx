@@ -37,7 +37,7 @@ const ContactCard = ({ item }: { item: Contact }) => {
                     style={styles.flag}
                     source={flag}
                     size="md"
-                    shape="rounded"
+                    shape="round"
                 />
                 : null}
         </Pressable>
