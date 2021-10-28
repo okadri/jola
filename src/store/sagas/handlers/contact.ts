@@ -1,6 +1,16 @@
 import { call, put } from "redux-saga/effects";
-import { addContact, setArchiveContact, setContacts } from "../../contact/actions";
-import { requestCreateContact, requestLoadContacts, requestArchiveContact } from "../requests/contact";
+import {
+    addContact,
+    setArchiveContact,
+    setContacts,
+    setUpdatedContact
+} from "../../contact/actions";
+import {
+    requestCreateContact,
+    requestLoadContacts,
+    requestArchiveContact,
+    requestUpdateContact
+} from "../requests/contact";
 
 export function* handleLoadContacts() {
     try {
@@ -27,6 +37,16 @@ export function* handleArchiveContact({payload} : ReturnType<typeof setArchiveCo
         const { error } = yield call(requestArchiveContact, payload);
         if (error) console.log(error);
         yield put(setArchiveContact(payload));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export function* handleUpdateContact({payload} : ReturnType<typeof setUpdatedContact>) {
+    try {
+        const { data: updatedContact, error } = yield call(requestUpdateContact, payload);
+        if (error) console.log('handleUpdateContact', error);
+        yield put(setUpdatedContact(payload));
     } catch (error) {
         console.log(error);
     }

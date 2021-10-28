@@ -13,7 +13,7 @@ import { selectCurrentContact } from "../store/contact/selectors";
 import { StyleSheet } from "react-native";
 import ContactForm from "../components/ContactForm";
 import { useDispatch } from "react-redux";
-import { createContact } from "../store/contact/actions";
+import { createContact, updateContact } from "../store/contact/actions";
 
 export default function ({
   navigation,
@@ -23,8 +23,13 @@ export default function ({
   const dispatch = useDispatch()
 
   const onSubmit = (values: any) => {
-    dispatch(createContact(values));
-    navigation.replace("ContactScreen");
+    if (contact) {
+      dispatch(updateContact(values));
+      navigation.goBack();
+    } else {
+      dispatch(createContact(values));
+      navigation.replace("ContactScreen");
+    }
   }
 
   return (
@@ -57,7 +62,7 @@ export default function ({
       <ContactForm
         onSubmit={onSubmit}
         contact={contact}
-        />
+      />
 
     </Layout>
   );

@@ -24,11 +24,11 @@ const ContactCard = ({ item }: { item: Contact }) => {
             <Text style={styles.name}>
                 {item.name}
             </Text>
-            <Text style={styles.address}>
+            <Text style={styles.meta}>
                 {item.street}, {item.city}, {item.state} {item.zipcode}
             </Text>
             {item.languages?.length ?
-                <Text style={styles.address}>
+                <Text style={styles.meta}>
                     Languages: {item.languages.map(l => l.name).join(', ')}
                 </Text>
                 : null}
@@ -46,7 +46,8 @@ const ContactCard = ({ item }: { item: Contact }) => {
 
 const styles = StyleSheet.create({
     contactCard: {
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         borderColor: '#cecece',
         borderStyle: 'solid',
         borderBottomWidth: 1,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'left',
     },
-    address: {
+    meta: {
         fontSize: 12,
         textAlign: 'left',
     },
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         backgroundColor: themeColor.white100,
     },
     flag: {
-        right: 10,
+        right: 20,
         top: '30%',
         position: 'absolute',
     }

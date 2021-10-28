@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-native";
 import { Button, Picker, Section, Text, TextInput, themeColor } from 'react-native-rapi-ui';
 import { Formik } from "formik";
 import { Contact } from "../store/contact/model";
@@ -25,11 +25,17 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
     const countries = selectCountries();
     const languages = selectLanguages();
 
+    const getCountryByCode = (code: string) => countries.find(c => c.code === code);
     return (
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior="padding"
+            enabled={Platform.OS === "ios"}
+            >
             <ScrollView>
                 <Formik
                     initialValues={{
+                        id: contact?.id,
                         name: contact?.name,
                         email: contact?.email,
                         phone: contact?.phone,
@@ -44,70 +50,93 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                 >
                     {props => (
                         <Section style={styles.section}>
+                            {/* /////// NAME */}
                             <Text style={styles.label}>Full Name</Text>
                             <TextInput
                                 onChangeText={props.handleChange('name')}
                                 value={props.values.name}
+                                autoCapitalize="words"
+                                autoCorrect={false}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.name && props.errors.name}
                             </Text>
+                            {/* /////// EMAIL */}
                             <Text style={styles.label}>Email</Text>
                             <TextInput
                                 onChangeText={props.handleChange('email')}
                                 value={props.values.email}
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                autoCorrect={false}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.email && props.errors.email}
                             </Text>
+                            {/* /////// PHONE */}
                             <Text style={styles.label}>Phone</Text>
                             <TextInput
                                 onChangeText={props.handleChange('phone')}
                                 value={props.values.phone}
+                                keyboardType="phone-pad"
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.phone && props.errors.phone}
                             </Text>
+                            {/* /////// STREET */}
                             <Text style={styles.label}>Street Address</Text>
                             <TextInput
                                 onChangeText={props.handleChange('street')}
                                 value={props.values.street}
+                                autoCapitalize="words"
+                                autoCorrect={false}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.street && props.errors.street}
                             </Text>
+                            {/* /////// CITY */}
                             <Text style={styles.label}>City</Text>
                             <TextInput
                                 onChangeText={props.handleChange('city')}
                                 value={props.values.city}
+                                autoCapitalize="words"
+                                autoCorrect={false}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.city && props.errors.city}
                             </Text>
+                            {/* /////// STATE */}
                             <Text style={styles.label}>State</Text>
                             <TextInput
                                 onChangeText={props.handleChange('state')}
                                 value={props.values.state}
+                                autoCapitalize="characters"
+                                autoCorrect={false}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.state && props.errors.state}
                             </Text>
+                            {/* /////// ZIPCODE */}
                             <Text style={styles.label}>Zipcode</Text>
                             <TextInput
                                 onChangeText={props.handleChange('zipcode')}
                                 value={props.values.zipcode}
+                                keyboardType="numeric"
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.zipcode && props.errors.zipcode}
                             </Text>
+                            {/* /////// COUNTRY */}
                             <Text style={styles.label}>Country of Origin</Text>
                             <Picker
                                 items={countries.map(c => {return {label: c.name, value: c.code}})}
                                 placeholder="Choose Country"
+                                onValueChange={val => props.values.country_of_origin = getCountryByCode(val)}
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.country_of_origin && props.errors.country_of_origin}
                             </Text>
+                            {/* /////// SUBMIT */}
                             <Button style={styles.button} onPress={() => props.handleSubmit()} text="Submit" />
                         </Section>
                     )}
