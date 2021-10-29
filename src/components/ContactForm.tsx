@@ -131,6 +131,7 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                             <Picker
                                 items={countries.map(c => {return {label: c.name, value: c.code}})}
                                 placeholder="Choose Country"
+                                value={props.values.country_of_origin?.code}
                                 onValueChange={val => props.values.country_of_origin = getCountryByCode(val)}
                             />
                             <Text style={{ color: themeColor.danger }}>
