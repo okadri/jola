@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         alignItems: "flex-end",
         justifyContent: "center",
-        height: 75,
+        height: 70,
     },
     btnText: {
         padding: 10,

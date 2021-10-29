@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Contact } from "../store/contact/model";
 import { Text, Avatar, themeColor, useTheme } from 'react-native-rapi-ui';
@@ -13,7 +13,7 @@ const ContactCard = ({ item }: { item: Contact }) => {
     const dispatch = useDispatch();
 
     const flag = item.country_of_origin && item.country_of_origin.code.toLocaleUpperCase() in FLAGS ?
-    FLAGS[item.country_of_origin.code.toLocaleUpperCase()] : null;
+        FLAGS[item.country_of_origin.code.toLocaleUpperCase()] : null;
 
     const displayContact = () => {
         dispatch(setCurrentContact(item));
@@ -21,17 +21,6 @@ const ContactCard = ({ item }: { item: Contact }) => {
     }
     return (
         <Pressable style={[styles.contactCard, isDarkmode ? styles.bgDark : styles.bgLight]} onPress={() => displayContact()}>
-            <Text style={styles.name}>
-                {item.name}
-            </Text>
-            <Text style={styles.meta}>
-                {item.street}, {item.city}, {item.state} {item.zipcode}
-            </Text>
-            {item.languages?.length ?
-                <Text style={styles.meta}>
-                    Languages: {item.languages.map(l => l.name).join(', ')}
-                </Text>
-                : null}
             {flag ?
                 <Avatar
                     style={styles.flag}
@@ -39,19 +28,27 @@ const ContactCard = ({ item }: { item: Contact }) => {
                     size="md"
                     shape="round"
                 />
-                : null}
+                : <View style={styles.flag}></View>}
+            <View>
+                <Text style={styles.name}>
+                    {item.name}
+                </Text>
+                <Text style={styles.meta}>
+                    {item.street}, {item.city}, {item.state} {item.zipcode}
+                </Text>
+            </View>
         </Pressable>
     );
 };
 
 const styles = StyleSheet.create({
     contactCard: {
+        flexDirection: 'row',
         paddingVertical: 10,
-        paddingHorizontal: 20,
         borderColor: '#cecece',
         borderStyle: 'solid',
         borderBottomWidth: 1,
-        height: 75,
+        height: 70,
     },
     name: {
         fontSize: 20,
@@ -68,9 +65,8 @@ const styles = StyleSheet.create({
         backgroundColor: themeColor.white100,
     },
     flag: {
-        right: 20,
-        top: '30%',
-        position: 'absolute',
+        width: 40,
+        marginHorizontal: 10,
     }
 });
 
