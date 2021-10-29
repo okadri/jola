@@ -1,4 +1,4 @@
-import { addContact, ContactActionTypes, SortByOptions } from "./actions";
+import { ContactActionTypes, SortByOptions } from "./actions";
 import { Contact } from "./model";
 
 export interface ContactState {
@@ -10,7 +10,6 @@ export interface ContactState {
     showOptions: boolean;
     confirmArchive: boolean;
     sortBy: SortByOptions;
-    expandedSections: number[];
     smsTemplate: string;
 }
 
@@ -22,7 +21,6 @@ const initialState: ContactState = {
     confirmArchive: false,
     sortBy: SortByOptions.SMART,
     searchCriteria: "",
-    expandedSections: [],
     smsTemplate: "Salam.. Came by to visit and missed you. We hope to see you in the Masjid!"
 }
 
@@ -111,9 +109,6 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             break;
 
-        case ContactActionTypes.UPDATE_EXPANDED_SECTIONS:
-            newState.expandedSections = payload;
-            break;
     };
 
     return newState;

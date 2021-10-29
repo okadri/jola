@@ -14,7 +14,6 @@ export enum ContactActionTypes {
     SET_UPDATED_CONTACT = 'contact/SET_UPDATED_CONTACT',
     SET_ARCHIVE_CONTACT = 'contact/SET_ARCHIVE_CONTACT',
     CONFIRM_ARCHIVE = 'contact/CONFIRM_ARCHIVE',
-    UPDATE_EXPANDED_SECTIONS = 'contact/UPDATE_EXPANDED_SECTIONS',
 }
 
 export enum SortByOptions {
@@ -87,9 +86,4 @@ export const updateContact = (contact: Contact) => ({
 export const setUpdatedContact = (contact: Contact) => ({
     type: ContactActionTypes.SET_UPDATED_CONTACT,
     payload: contact,
-});
-
-export const updateEpandedSections = (expandedSections: number[]) => ({
-    type: ContactActionTypes.UPDATE_EXPANDED_SECTIONS,
-    payload: expandedSections,
 });

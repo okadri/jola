@@ -143,12 +143,6 @@ export default function ({
             <BottomSheetScrollView>
               <ContactSheet contact={contact} />
             </BottomSheetScrollView>
-            <FloatingAction
-              actions={actions}
-              color={themeColor.primary}
-              onPressItem={name => {
-                runAction(name);
-              }} />
           </BottomSheet>
         </>
       }

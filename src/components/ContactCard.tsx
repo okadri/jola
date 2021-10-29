@@ -22,15 +22,19 @@ const ContactCard = ({ item }: { item: Contact }) => {
     return (
         <Pressable style={[styles.contactCard, isDarkmode ? styles.bgDark : styles.bgLight]} onPress={() => displayContact()}>
             {flag ?
-                <Avatar
-                    style={styles.flag}
-                    source={flag}
-                    size="md"
-                    shape="round"
-                />
-                : <View style={styles.flag}></View>}
-            <View>
-                <Text style={styles.name}>
+                <View style={styles.avatarContainer}>
+                    <Avatar
+                        source={flag}
+                        size="md"
+                        shape="round"
+                    />
+                </View>
+                : <View style={styles.avatarContainer}></View>}
+            <View style={styles.textContainer}>
+                <Text
+                    numberOfLines={1}
+                    adjustsFontSizeToFit
+                    style={styles.name}>
                     {item.name}
                 </Text>
                 <Text style={styles.meta}>
@@ -50,6 +54,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         height: 70,
     },
+    avatarContainer: {
+        width: 40,
+        marginLeft: 10,
+        justifyContent: 'center',
+    },
+    textContainer: {
+        flex: 1,
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+    },
     name: {
         fontSize: 20,
         textAlign: 'left',
@@ -64,10 +78,6 @@ const styles = StyleSheet.create({
     bgLight: {
         backgroundColor: themeColor.white100,
     },
-    flag: {
-        width: 40,
-        marginHorizontal: 10,
-    }
 });
 
 export default ContactCard;
