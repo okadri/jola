@@ -46,18 +46,24 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                         style={styles.meta}>
                         {contact?.street}, {contact?.city}, {contact?.state} {contact?.zipcode}
                     </Text>
-                    <Text
+                    {contact?.email ? <Text
                         numberOfLines={1}
                         adjustsFontSizeToFit
                         style={styles.meta}>
                         {contact?.email}
-                    </Text>
-                    <Text
+                    </Text> : null}
+                    {contact?.phone ? <Text
                         numberOfLines={1}
                         adjustsFontSizeToFit
                         style={styles.meta}>
                         {contact?.phone}
-                    </Text>
+                    </Text> : null}
+                    {contact?.languages?.length ? <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        style={styles.meta}>
+                        Languages: {contact?.languages?.map(l => l.name).join(', ')}
+                    </Text> : null}
                 </View>
             </View>
             <View style={styles.buttons}>
