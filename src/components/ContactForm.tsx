@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import { Contact } from "../store/contact/model";
 import * as yup from "yup";
 import { selectCountries, selectLanguages } from "../store/shared/selectors";
+import MultiSelect from 'react-native-multiple-select';
 
 //  !/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -26,12 +27,21 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
     const languages = selectLanguages();
 
     const getCountryByCode = (code: string) => countries.find(c => c.code === code);
+
+    const setLanguages = (langCodes, props) => {
+        props.setValues(curr => {
+            return {
+                ...curr,
+                languages: languages.filter(l => langCodes.indexOf(l.code) >= 0)
+            }
+        })
+    }
     return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior="padding"
             enabled={Platform.OS === "ios"}
-            >
+        >
             <ScrollView>
                 <Formik
                     initialValues={{
@@ -44,6 +54,7 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                         state: contact?.state,
                         zipcode: contact?.zipcode,
                         country_of_origin: contact?.country_of_origin,
+                        languages: contact?.languages,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={values => onSubmit(values)}
@@ -129,10 +140,34 @@ const ContactForm = ({ contact, onSubmit }: { contact: Contact | undefined, onSu
                             {/* /////// COUNTRY */}
                             <Text style={styles.label}>Country of Origin</Text>
                             <Picker
-                                items={countries.map(c => {return {label: c.name, value: c.code}})}
+                                items={countries.map(c => { return { label: c.name, value: c.code } })}
                                 placeholder="Choose Country"
                                 value={props.values.country_of_origin?.code}
                                 onValueChange={val => props.values.country_of_origin = getCountryByCode(val)}
+                            />
+                            <Text style={{ color: themeColor.danger }}>
+                                {props.touched.country_of_origin && props.errors.country_of_origin}
+                            </Text>
+                            {/* /////// LANGUAGES */}
+                            <Text style={styles.label}>Languages</Text>
+                            <MultiSelect
+                                hideTags
+                                items={languages}
+                                uniqueKey="code"
+                                onSelectedItemsChange={langCodes => setLanguages(langCodes, props)}
+                                selectedItems={props.values.languages?.map(l => l.code)}
+                                selectText="Pick Languages"
+                                searchInputPlaceholderText="Search Languages..."
+                                tagRemoveIconColor="#CCC"
+                                tagBorderColor="#CCC"
+                                tagTextColor="#CCC"
+                                selectedItemTextColor="#CCC"
+                                selectedItemIconColor="#CCC"
+                                itemTextColor="#000"
+                                displayKey="name"
+                                searchInputStyle={{ color: '#CCC' }}
+                                submitButtonColor="#CCC"
+                                submitButtonText="Submit"
                             />
                             <Text style={{ color: themeColor.danger }}>
                                 {props.touched.country_of_origin && props.errors.country_of_origin}

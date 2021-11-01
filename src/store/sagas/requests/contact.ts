@@ -6,14 +6,8 @@ export function requestLoadContacts() {
         .from<Contact>('contacts')
         .select(`
         *,
-        country_of_origin (
-            name,
-            code
-        ),
-        languages (
-            name,
-            code
-        )
+        country_of_origin (*),
+        languages (*)
         `)
         .eq('is_archived', false)
 }
@@ -46,7 +40,23 @@ export function requestUpdateContact(contact: Contact) {
             city: contact.city,
             state: contact.state,
             zipcode: contact.zipcode,
-            country_of_origin: contact.country_of_origin?.id
+            country_of_origin: contact.country_of_origin?.id,
         })
-        .eq('id', contact.id)
+        .eq('id', contact.id);
+}
+
+export function requestClearContactLanguages(contact: Contact) {
+    return supabase
+        .from('contact_languages')
+        .delete()
+        .match({ contact_id: contact.id });
+}
+
+export function requestSetContactLanguages(contact: Contact) {
+    const contactLanguages = contact.languages?.map(l => {
+        return { contact_id: contact.id, language_id: l.id };
+    });
+    return supabase
+        .from('contact_languages')
+        .insert(contactLanguages);
 }

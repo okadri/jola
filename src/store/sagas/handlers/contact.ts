@@ -9,7 +9,9 @@ import {
     requestCreateContact,
     requestLoadContacts,
     requestArchiveContact,
-    requestUpdateContact
+    requestUpdateContact,
+    requestClearContactLanguages,
+    requestSetContactLanguages
 } from "../requests/contact";
 
 export function* handleLoadContacts() {
@@ -44,8 +46,12 @@ export function* handleArchiveContact({payload} : ReturnType<typeof setArchiveCo
 
 export function* handleUpdateContact({payload} : ReturnType<typeof setUpdatedContact>) {
     try {
-        const { data: updatedContact, error } = yield call(requestUpdateContact, payload);
-        if (error) console.log('handleUpdateContact', error);
+        const { errorUpdate } = yield call(requestUpdateContact, payload);
+        const { errorClear } = yield call(requestClearContactLanguages, payload);
+        const { errorSetLangs } = yield call(requestSetContactLanguages, payload);
+        if (errorUpdate) console.log('handleUpdateContact_update', errorUpdate);
+        if (errorClear) console.log('handleUpdateContact_clear', errorClear);
+        if (errorSetLangs) console.log('handleUpdateContact_setLangs', errorSetLangs);
         yield put(setUpdatedContact(payload));
     } catch (error) {
         console.log(error);
