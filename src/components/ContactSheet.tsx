@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Linking, Platform } from "react-native";
-import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 
 import { Contact } from "../store/contact/model";
 import { Avatar, Text, themeColor, useTheme } from 'react-native-rapi-ui';
 import { selectSmsTemplate } from "../store/contact/selectors";
 import FLAGS from "../constants/flags";
+import ContactVisits from "./ContactVisits";
 
 const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
     const { isDarkmode } = useTheme();
@@ -34,36 +35,78 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        style={styles.name}>
-                        {contact?.name}
-                    </Text>
-                    <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        style={styles.meta}>
-                        {contact?.street}, {contact?.city}, {contact?.state} {contact?.zipcode}
-                    </Text>
-                    {contact?.email ? <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        style={styles.meta}>
-                        {contact?.email}
-                    </Text> : null}
-                    {contact?.phone ? <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        style={styles.meta}>
-                        {contact?.phone}
-                    </Text> : null}
-                    {contact?.languages?.length ? <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit
-                        style={styles.meta}>
-                        Languages: {contact?.languages?.map(l => l.name).join(', ')}
-                    </Text> : null}
+                    <View style={styles.metaLine}>
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.name}>
+                            {contact?.name}
+                        </Text>
+                    </View>
+                    <View style={styles.metaLine}>
+                        <FontAwesome
+                            name="map-marker"
+                            size={15}
+                            style={styles.metaIcon}
+                            color={isDarkmode
+                                ? themeColor.white
+                                : themeColor.gray300}
+                        />
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.metaText}>
+                            {contact?.street}, {contact?.city}, {contact?.state} {contact?.zipcode}
+                        </Text>
+                    </View>
+                    {contact?.email ? <View style={styles.metaLine}>
+                        <MaterialIcons
+                            name="email"
+                            size={15}
+                            style={styles.metaIcon}
+                            color={isDarkmode
+                                ? themeColor.white
+                                : themeColor.gray300}
+                        />
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.metaText}>
+                            {contact?.email}
+                        </Text>
+                    </View> : null}
+                    {contact?.phone ? <View style={styles.metaLine}>
+                        <MaterialIcons
+                            name="phone"
+                            size={15}
+                            style={styles.metaIcon}
+                            color={isDarkmode
+                                ? themeColor.white
+                                : themeColor.gray300}
+                        />
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.metaText}>
+                            {contact?.phone}
+                        </Text>
+                    </View> : null}
+                    {contact?.languages?.length ? <View style={styles.metaLine}>
+                        <FontAwesome
+                            name="language"
+                            size={15}
+                            style={styles.metaIcon}
+                            color={isDarkmode
+                                ? themeColor.white
+                                : themeColor.gray300}
+                        />
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.metaText}>
+                            {contact?.languages?.map(l => l.name).join(', ')}
+                        </Text>
+                    </View> : null}
                 </View>
             </View>
             <View style={styles.buttons}>
@@ -104,6 +147,7 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                     onPress={() => contact?.email ? Linking.openURL(`mailto:${contact.email}`) : null}
                 />
             </View>
+            <ContactVisits contact={contact} />
         </>
     );
 };
@@ -124,10 +168,18 @@ const styles = StyleSheet.create({
         margin: 10,
         fontSize: 40,
     },
-    meta: {
+    metaLine: {
         marginLeft: 15,
         marginRight: 15,
         fontSize: 15,
+        flexDirection: 'row',
+    },
+    metaIcon: {
+        width: 25,
+        alignSelf: 'center',
+        textAlign: 'center',
+    },
+    metaText: {
         color: themeColor.gray300,
     },
     buttons: {

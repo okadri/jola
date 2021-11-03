@@ -7,7 +7,8 @@ export function requestLoadContacts() {
         .select(`
         *,
         country_of_origin (*),
-        languages (*)
+        languages (*),
+        visits (*)
         `)
         .eq('is_archived', false)
 }

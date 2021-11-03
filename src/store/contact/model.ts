@@ -1,8 +1,16 @@
 import { Country } from "../shared/model";
 import { Language } from "../shared/model";
 
-export interface Contact {
+export interface Visit {
     id?: string;
+    created_at?: Date;
+    created_by: string;  // TODO: change to a User entitiy
+    contact_id: number;
+    note: string;
+    mood: number;
+};
+export interface Contact {
+    id?: number;
     created_at?: Date;
     updated_at?: Date;
     name: string;
@@ -16,4 +24,5 @@ export interface Contact {
     country_of_origin?: Country;
     languages?: Language[];
     is_archived?: boolean;
+    visits?: Visit[];
 };
