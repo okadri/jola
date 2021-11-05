@@ -3,8 +3,8 @@ import { Language } from "../shared/model";
 
 export interface Visit {
     id?: string;
-    created_at?: Date;
-    created_by: string;  // TODO: change to a User entitiy
+    created_at: Date;
+    created_by: string;
     contact_id: number;
     note: string;
     mood: number;
