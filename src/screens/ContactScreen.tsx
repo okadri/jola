@@ -15,13 +15,14 @@ import {
   selectConfirmArchive,
   selectCurrentContact,
   selectLoadingContacts,
+  selectShowReportModal,
 } from "../store/contact/selectors";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import ContactSheet from "../components/ContactSheet";
 import { darkMap } from "../constants/mapStyles";
 import { FloatingAction } from "react-native-floating-action";
 import { useDispatch } from "react-redux";
-import { archiveContact, confirmArchive } from "../store/contact/actions";
+import { archiveContact, confirmArchive, showReportVisitModal } from "../store/contact/actions";
 import ConfirmModal from "../components/ConfirmModal";
 
 export default function ({
@@ -31,20 +32,21 @@ export default function ({
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
   const showArchiveConfirm = selectConfirmArchive();
+  const showReportModal = selectShowReportModal();
   const snapPoints = useMemo(() => ['30%', '70%'], []);
   const dispatch = useDispatch();
 
-  const archive = () => dispatch(confirmArchive(true));
   const hideArchiveConfirm = () => dispatch(confirmArchive(false));
+  const hideReportVisit = () => dispatch(showReportVisitModal(false));
 
   const mapDarkStyle = isDarkmode ? darkMap : [];
 
   const actions = [
     {
-      text: "Navigate",
-      icon: require("../../assets/images/navigate.png"),
-      name: "navigate",
-      color: themeColor.primary,
+      text: "Archive Contact",
+      icon: require("../../assets/images/archive.png"),
+      name: "archive",
+      color: themeColor.danger700,
       position: 1,
     },
     {
@@ -55,11 +57,18 @@ export default function ({
       position: 2,
     },
     {
-      text: "Archive Contact",
-      icon: require("../../assets/images/archive.png"),
-      name: "archive",
-      color: themeColor.danger700,
+      text: "Navigate",
+      icon: require("../../assets/images/navigate.png"),
+      name: "navigate",
+      color: themeColor.primary,
       position: 3,
+    },
+    {
+      text: "Report Visit",
+      icon: require("../../assets/images/report.png"),
+      name: "report",
+      color: themeColor.primary,
+      position: 4,
     },
   ];
 
@@ -68,14 +77,23 @@ export default function ({
     navigation.navigate("MainTabs");
   };
   
+  const doReportVisit = () => {
+    console.log("Visit Logged");
+    hideReportVisit();
+  };
+  
   const runAction = (action: string | undefined) => {
     switch (action) {
       case "archive":
-        archive();
+        dispatch(confirmArchive(true));
         break;
 
       case "edit":
         navigation.navigate("ContactForm");
+        break;
+
+      case "report":
+        dispatch(showReportVisitModal(true));
         break;
 
       default:
@@ -119,6 +137,13 @@ export default function ({
             confirmBtnTxt="Yes"
             confirmAction={doArchiveContact}
             cancelAction={hideArchiveConfirm}
+          />
+          <ConfirmModal
+            showConfirmation={showReportModal}
+            message="Report New Visit?"
+            confirmBtnTxt="Yes"
+            confirmAction={doReportVisit}
+            cancelAction={hideReportVisit}
           />
           <MapView
             style={styles.map}

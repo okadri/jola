@@ -9,6 +9,7 @@ export interface ContactState {
     displayContacts: Contact[];
     showOptions: boolean;
     confirmArchive: boolean;
+    showReportModal: boolean;
     sortBy: SortByOptions;
     smsTemplate: string;
 }
@@ -19,6 +20,7 @@ const initialState: ContactState = {
     loading: true,
     showOptions: false,
     confirmArchive: false,
+    showReportModal: false,
     sortBy: SortByOptions.SMART,
     searchCriteria: "",
     smsTemplate: "Salam.. Came by to visit and missed you. We hope to see you in the Masjid!"
@@ -92,6 +94,10 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
 
         case ContactActionTypes.CONFIRM_ARCHIVE:
             newState.confirmArchive = payload;
+            break;
+
+        case ContactActionTypes.SHOW_REPORT_MODAL:
+            newState.showReportModal = payload;
             break;
 
         case ContactActionTypes.SET_ARCHIVE_CONTACT:

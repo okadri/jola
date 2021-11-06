@@ -14,6 +14,7 @@ export enum ContactActionTypes {
     SET_UPDATED_CONTACT = 'contact/SET_UPDATED_CONTACT',
     SET_ARCHIVE_CONTACT = 'contact/SET_ARCHIVE_CONTACT',
     CONFIRM_ARCHIVE = 'contact/CONFIRM_ARCHIVE',
+    SHOW_REPORT_MODAL = 'contact/SHOW_REPORT_MODAL',
 }
 
 export enum SortByOptions {
@@ -75,6 +76,11 @@ export const setArchiveContact = (contact: Contact) => ({
 
 export const confirmArchive = (payload: boolean) => ({
     type: ContactActionTypes.CONFIRM_ARCHIVE,
+    payload: payload,
+});
+
+export const showReportVisitModal = (payload: boolean) => ({
+    type: ContactActionTypes.SHOW_REPORT_MODAL,
     payload: payload,
 });
 

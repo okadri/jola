@@ -29,3 +29,6 @@ export const selectSmsTemplate = (): string =>
 
 export const selectConfirmArchive = (): boolean | undefined =>
     useSelector((state: RootState) => state.contact.confirmArchive);
+
+export const selectShowReportModal = (): boolean | undefined =>
+    useSelector((state: RootState) => state.contact.showReportModal);
