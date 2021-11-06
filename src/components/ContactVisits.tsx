@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Text, themeColor } from "react-native-rapi-ui";
 import { Contact } from "../store/contact/model";
 import Moment from 'moment';
+import MOODS from "../constants/moods";
 
 const ContactVisits = ({ contact }: { contact: Contact | undefined }) => {
     return (
@@ -26,7 +27,7 @@ const ContactVisits = ({ contact }: { contact: Contact | undefined }) => {
                                 </View>
                                 <View style={[, i % 2 ? styles.alignLeft : styles.alignRight]}>
                                     <Text style={styles.createdBy}>{v.created_by}</Text>
-                                    <Text>{v.mood}</Text>
+                                    <Image source={MOODS[v.mood + '']} style={styles.mood} />
                                     {v.note ? <Text>{v.note}</Text> : null}
                                 </View>
                             </View>
@@ -93,6 +94,10 @@ const styles = StyleSheet.create({
     },
     createdBy: {
         color: themeColor.gray300,
+    },
+    mood: {
+        width: 30,
+        height: 30,
     }
 });
 

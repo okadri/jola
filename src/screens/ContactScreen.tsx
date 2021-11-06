@@ -33,7 +33,7 @@ export default function ({
   const contact = selectCurrentContact();
   const showArchiveConfirm = selectConfirmArchive();
   const showReportModal = selectShowReportModal();
-  const snapPoints = useMemo(() => ['30%', '70%'], []);
+  const snapPoints = useMemo(() => contact?.visits?.length ? ['30%', '70%'] : ['30%'], []);
   const dispatch = useDispatch();
 
   const hideArchiveConfirm = () => dispatch(confirmArchive(false));
