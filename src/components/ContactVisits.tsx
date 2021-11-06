@@ -11,25 +11,28 @@ const ContactVisits = ({ contact }: { contact: Contact | undefined }) => {
                 numberOfLines={1}
                 adjustsFontSizeToFit
                 style={styles.timeLineTitle}>
-                {contact?.visits ? "Visit History" : "No Visit history"}
+                {contact?.visits?.length ? "Visit History" : "No Visit history"}
             </Text>
-            <View style={styles.timeLine} />
-            <View style={styles.timeLineContent}>
-                {contact?.visits?.sort((v1, v2) => v1.created_at < v2.created_at ? 1 :
-                    v1.created_at > v2.created_at ? -1 : 0
-                ).map((v, i) => (
-                    <View style={i % 2 ? styles.visitRight : styles.visitLeft} key={v.id}>
-                        <View style={[styles.date, i % 2 ? styles.alignLeft : styles.alignRight]}>
-                            <Text style={styles.dateText}>{Moment(v.created_at).fromNow()}</Text>
-                        </View>
-                        <View style={[, i % 2 ? styles.alignLeft : styles.alignRight]}>
-                            <Text style={styles.createdBy}>{v.created_by}</Text>
-                            <Text>{v.mood}</Text>
-                            {v.note ? <Text>{v.note}</Text> : null}
-                        </View>
+            {contact?.visits?.length ?
+                <>
+                    <View style={styles.timeLine} />
+                    <View style={styles.timeLineContent}>
+                        {contact?.visits?.sort((v1, v2) => v1.created_at < v2.created_at ? 1 :
+                            v1.created_at > v2.created_at ? -1 : 0
+                        ).map((v, i) => (
+                            <View style={i % 2 ? styles.visitRight : styles.visitLeft} key={v.id}>
+                                <View style={[styles.date, i % 2 ? styles.alignLeft : styles.alignRight]}>
+                                    <Text style={styles.dateText}>{Moment(v.created_at).fromNow()}</Text>
+                                </View>
+                                <View style={[, i % 2 ? styles.alignLeft : styles.alignRight]}>
+                                    <Text style={styles.createdBy}>{v.created_by}</Text>
+                                    <Text>{v.mood}</Text>
+                                    {v.note ? <Text>{v.note}</Text> : null}
+                                </View>
+                            </View>
+                        ))}
                     </View>
-                ))}
-            </View>
+                </> : null}
         </View>
     );
 };
