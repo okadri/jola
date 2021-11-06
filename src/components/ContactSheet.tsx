@@ -1,19 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Linking, Platform } from "react-native";
-import { Entypo, FontAwesome, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, View, Linking, Platform, Image } from "react-native";
+import { Entypo, FontAwesome, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { Contact } from "../store/contact/model";
 import { Avatar, Text, themeColor, useTheme } from 'react-native-rapi-ui';
 import { selectSmsTemplate } from "../store/contact/selectors";
 import FLAGS from "../constants/flags";
 import ContactVisits from "./ContactVisits";
+import MOODS from "../constants/moods";
 
 const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
     const { isDarkmode } = useTheme();
     const smsTemplate = selectSmsTemplate();
-
-    const flag = contact?.country_of_origin && contact?.country_of_origin.code.toLocaleUpperCase() in FLAGS ?
-        FLAGS[contact?.country_of_origin.code.toLocaleUpperCase()] : null;
 
     const openSmsUrl = (phone: string | undefined) => {
         const separator = Platform.OS === "ios" ? "&" : "?";
@@ -24,14 +22,15 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
         Linking.openURL(`https://api.whatsapp.com/send?phone=${phone}`)
     }
 
+    const averageMood = MOODS['' + Math.round(contact?.visits?.reduce((t, v) => t + v.mood, 0) / contact?.visits.length)];
+
     return (
         <>
             <View style={styles.container}>
-                <View style={styles.avatarContainer}>
-                    <Avatar
-                        source={flag}
-                        size="lg"
-                        shape="round"
+                <View style={styles.moodContainer}>
+                    <Image
+                        source={averageMood}
+                        style={styles.mood}
                     />
                 </View>
                 <View style={styles.textContainer}>
@@ -89,6 +88,22 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                             adjustsFontSizeToFit
                             style={styles.metaText}>
                             {contact?.phone}
+                        </Text>
+                    </View> : null}
+                    {contact?.country_of_origin ? <View style={styles.metaLine}>
+                        <Ionicons
+                            name="earth"
+                            size={15}
+                            style={styles.metaIcon}
+                            color={isDarkmode
+                                ? themeColor.white
+                                : themeColor.gray300}
+                        />
+                        <Text
+                            numberOfLines={1}
+                            adjustsFontSizeToFit
+                            style={styles.metaText}>
+                            {contact?.country_of_origin.name}
                         </Text>
                     </View> : null}
                     {contact?.languages?.length ? <View style={styles.metaLine}>
@@ -155,21 +170,24 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        paddingTop: 20,
     },
-    avatarContainer: {
+    moodContainer: {
+        justifyContent: "center",
+    },
+    mood: {
         width: 70,
-        marginLeft: 20,
-        justifyContent: 'center',
+        height: 70,
+        marginHorizontal: 20,
     },
     textContainer: {
         flex: 1,
     },
     name: {
-        margin: 10,
         fontSize: 40,
+        marginBottom: 5,
     },
     metaLine: {
-        marginLeft: 15,
         marginRight: 15,
         fontSize: 15,
         flexDirection: 'row',
