@@ -131,7 +131,7 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                     color={!contact?.phone ? themeColor.gray100 : isDarkmode
                         ? themeColor.white
                         : themeColor.dark100}
-                    style={[styles.button, contact?.email ? null : { color: themeColor.gray300 }]}
+                    style={styles.button}
                     onPress={() => contact?.phone ? Linking.openURL(`tel:${contact.phone}`) : null}
                 />
                 <MaterialIcons
@@ -140,7 +140,7 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                     color={!contact?.phone ? themeColor.gray100 : isDarkmode
                         ? themeColor.white
                         : themeColor.dark100}
-                    style={[styles.button, contact?.email ? null : { color: themeColor.gray300 }]}
+                    style={styles.button}
                     onPress={() => contact?.phone ? openSmsUrl(contact.phone) : null}
                 />
                 <FontAwesome5
@@ -149,13 +149,13 @@ const ContactSheet = ({ contact }: { contact: Contact | undefined }) => {
                     color={!contact?.phone ? themeColor.gray100 : isDarkmode
                         ? themeColor.white
                         : themeColor.dark100}
-                    style={[styles.button, contact?.email ? null : { color: themeColor.gray300 }]}
+                    style={styles.button}
                     onPress={() => contact?.phone ? openWhatsappUrl(contact.phone) : null}
                 />
                 <Entypo
                     name="mail"
                     size={20}
-                    color={isDarkmode
+                    color={!contact?.email ? themeColor.gray100 : isDarkmode
                         ? themeColor.white
                         : themeColor.dark100}
                     style={styles.button}
@@ -208,7 +208,6 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         padding: 15,
-        margin: 15,
     },
 });
 

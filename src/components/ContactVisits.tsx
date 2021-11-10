@@ -4,6 +4,7 @@ import { Text, themeColor } from "react-native-rapi-ui";
 import { Contact } from "../store/contact/model";
 import Moment from 'moment';
 import MOODS from "../constants/moods";
+import { Feather } from "@expo/vector-icons";
 
 const ContactVisits = ({ contact }: { contact: Contact | undefined }) => {
     return (
@@ -12,7 +13,15 @@ const ContactVisits = ({ contact }: { contact: Contact | undefined }) => {
                 numberOfLines={1}
                 adjustsFontSizeToFit
                 style={styles.timeLineTitle}>
-                {contact?.visits?.length ? "Visit History" : "No Visit history"}
+                {
+                    contact?.visits?.length ?
+                        <>
+                            <Feather name="chevrons-down" size={15} />
+                            Visit History
+                            <Feather name="chevrons-down" size={15} />
+                        </> :
+                        "No Visit history"
+                }
             </Text>
             {contact?.visits?.length ?
                 <>
@@ -51,7 +60,7 @@ const styles = StyleSheet.create({
         borderColor: themeColor.gray100,
         position: "absolute",
         height: "100%",
-        marginTop: 70,
+        marginTop: 120,
         left: "50%",
         width: 9,
         borderLeftWidth: 2,
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
     },
     timeLineContent: {
         flex: 1,
-        marginTop: 50,
+        marginTop: 100,
     },
     visitLeft: {
         width: "50%",

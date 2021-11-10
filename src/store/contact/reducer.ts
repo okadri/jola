@@ -109,9 +109,13 @@ export const contactReducer = (state: ContactState = initialState, action: any) 
             break;
 
         case ContactActionTypes.SET_UPDATED_CONTACT:
-            newState.currentContact = payload;
+            const updatedContact = {
+                ...newState.contacts.find(c => c.id === payload.id),
+                ...payload
+            };
+            newState.currentContact = updatedContact;
             newState.contacts = newState.contacts.filter(c => c.id !== payload.id);
-            newState.contacts.push(payload);
+            newState.contacts.push(updatedContact);
             newState.displayContacts = sortAndFilterBy(newState.contacts, state.sortBy, state.searchCriteria);
             break;
 
