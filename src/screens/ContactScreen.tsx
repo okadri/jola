@@ -24,6 +24,7 @@ import { FloatingAction } from "react-native-floating-action";
 import { useDispatch } from "react-redux";
 import { archiveContact, confirmArchive, showReportVisitModal } from "../store/contact/actions";
 import ConfirmModal from "../components/ConfirmModal";
+import ReportVisitModal from "../components/reportVisitModal";
 
 export default function ({
   navigation,
@@ -32,12 +33,10 @@ export default function ({
   const loadingContact = selectLoadingContacts();
   const contact = selectCurrentContact();
   const showArchiveConfirm = selectConfirmArchive();
-  const showReportModal = selectShowReportModal();
   const snapPoints = useMemo(() => contact?.visits?.length ? ['30%', '70%'] : ['30%'], []);
   const dispatch = useDispatch();
 
   const hideArchiveConfirm = () => dispatch(confirmArchive(false));
-  const hideReportVisit = () => dispatch(showReportVisitModal(false));
 
   const mapDarkStyle = isDarkmode ? darkMap : [];
 
@@ -76,12 +75,7 @@ export default function ({
     dispatch(archiveContact(contact));
     navigation.navigate("MainTabs");
   };
-  
-  const doReportVisit = () => {
-    console.log("Visit Logged");
-    hideReportVisit();
-  };
-  
+    
   const runAction = (action: string | undefined) => {
     switch (action) {
       case "archive":
@@ -138,13 +132,7 @@ export default function ({
             confirmAction={doArchiveContact}
             cancelAction={hideArchiveConfirm}
           />
-          <ConfirmModal
-            showConfirmation={showReportModal}
-            message="Report New Visit?"
-            confirmBtnTxt="Yes"
-            confirmAction={doReportVisit}
-            cancelAction={hideReportVisit}
-          />
+          <ReportVisitModal />
           <MapView
             style={styles.map}
             initialRegion={{
