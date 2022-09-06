@@ -15,9 +15,8 @@ import {
   selectConfirmArchive,
   selectCurrentContact,
   selectLoadingContacts,
-  selectShowReportModal,
 } from "../store/contact/selectors";
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet, ActivityIndicator, PermissionsAndroid } from "react-native";
 import ContactSheet from "../components/ContactSheet";
 import { darkMap } from "../constants/mapStyles";
 import { FloatingAction } from "react-native-floating-action";
@@ -134,6 +133,13 @@ export default function ({
           />
           <ReportVisitModal />
           <MapView
+            onMapReady={() => {
+              PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+              ).then(granted => {
+                console.info(granted) // just to ensure that permissions were granted
+              });
+            }}
             style={styles.map}
             initialRegion={{
               latitude: 38.540980,
@@ -143,6 +149,9 @@ export default function ({
             }}
             provider={PROVIDER_GOOGLE}
             customMapStyle={mapDarkStyle}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            showsTraffic={true}
           />
           <FloatingAction
             actions={actions}
